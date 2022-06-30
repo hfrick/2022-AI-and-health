@@ -1,0 +1,639 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "tidymodels workshop",
+    "section": "",
+    "text": "This workshop provides an introduction to machine learning with R using the tidymodels framework, a collection of packages for modeling and machine learning using tidyverse principles. We will build, evaluate, compare, and tune predictive models. Along the way, we’ll learn about key concepts in machine learning including overfitting, resampling, and feature engineering. Learners will gain knowledge about good predictive modeling practices, as well as hands-on experience using tidymodels packages like parsnip, rsample, recipes, yardstick, tune, and workflows."
+  },
+  {
+    "objectID": "index.html#installation",
+    "href": "index.html#installation",
+    "title": "tidymodels workshop",
+    "section": "Installation",
+    "text": "Installation\nPlease join the workshop with a computer that has the following installed (all available for free):\n\nA recent version of R, available at https://cran.r-project.org/\nA recent version of RStudio Desktop (RStudio Desktop Open Source License, at least v2022.02), available at https://www.rstudio.com/download\nThe following R packages, which you can install from the R console:\n\n\ninstall.packages(c(\"tidyverse\", \"tidymodels\", \"modeldata\", \"kknn\",  \n                   \"ranger\",  \"rpart\", \"rpart.plot\", \n                   \"partykit\", \"vetiver\", \"xgboost\"))"
+  },
+  {
+    "objectID": "index.html#slides",
+    "href": "index.html#slides",
+    "title": "tidymodels workshop",
+    "section": "Slides",
+    "text": "Slides\n\n1: Introduction\n2: A minimal model\n3: A better workflow\n4: A tuned workflow"
+  },
+  {
+    "objectID": "index.html#links",
+    "href": "index.html#links",
+    "title": "tidymodels workshop",
+    "section": "Links",
+    "text": "Links\n\ntidymodels main website https://www.tidymodels.org/\n“Tidy Modeling with R” book: https://www.tmwr.org/"
+  },
+  {
+    "objectID": "slides/1-introduction.html#hello-world",
+    "href": "slides/1-introduction.html#hello-world",
+    "title": "Introduction to tidymodels",
+    "section": "hello world",
+    "text": "hello world\n\ncourse website\nwhoami\nwhat is ML\n\nfocus on supervised learning\npredictive modelling\n\nwhy tidymodels?\nhello tidymodels\nintro to ALzheimer’s disease data\n\nE: explore data\n\nschedule:\n\nbuild a model: model + resampling\nbuild better workflows: recipes + workflows\ntune better models:"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "slides/1-introduction.html#whoami",
+    "href": "slides/1-introduction.html#whoami",
+    "title": "Introduction to tidymodels",
+    "section": "whoami",
+    "text": "whoami"
+  },
+  {
+    "objectID": "slides/1-introduction.html#our-goals-for-this-workshop",
+    "href": "slides/1-introduction.html#our-goals-for-this-workshop",
+    "title": "Introduction to tidymodels",
+    "section": "Our goals for this workshop",
+    "text": "Our goals for this workshop\n\nIntroduce tidymodels and its general philosophy on modeling.\nHelp you become proficient with the core packages for modeling.\nPoint you to places to learn more and get help."
+  },
+  {
+    "objectID": "slides/1-introduction.html#why-tidymodels",
+    "href": "slides/1-introduction.html#why-tidymodels",
+    "title": "Introduction to tidymodels",
+    "section": "Why tidymodels?",
+    "text": "Why tidymodels?\nThere are several other modeling frameworks in R that try to:\n\ncreate a uniform, cohesive, and unsurprising set of modeling APIs\n\nExamples are caret, mlr3, and others.\n\ncaret is more favorable for people who prefer base R/traditional interfaces.\nmlr3 is more pythonic and also has many features.\ntidymodels would probably be preferable to those who place importance on a tidy R interface, a large number of features, and the idea that the interfaces should enable the “pit of success”."
+  },
+  {
+    "objectID": "slides/1-introduction.html#the-tidymodels-package",
+    "href": "slides/1-introduction.html#the-tidymodels-package",
+    "title": "Introduction to tidymodels",
+    "section": "The tidymodels package",
+    "text": "The tidymodels package\nThere are a lot of tidymodels packages but about 90% of the work is done by 5 packages. (rsample, recipes, parsnip, tune, and yardstick)\nThe best way to get started with tidymodels is to use the tidymodels meta-package. It loads the core packages plus some tidyverse packages.\nSome helpful links:\n\nList of all tidymodels functions\nList of all parsnip models\nList of all recipe steps\n\n\nclick on the search button on tidymodels.org for all those lists"
+  },
+  {
+    "objectID": "slides/1-introduction.html#the-tidymodels-package-1",
+    "href": "slides/1-introduction.html#the-tidymodels-package-1",
+    "title": "Introduction to tidymodels",
+    "section": "The tidymodels package",
+    "text": "The tidymodels package\n\nlibrary(tidymodels)\n#> ── Attaching packages ──────────────────────────── tidymodels 0.2.0 ──\n#> ✔ broom        0.8.0          ✔ rsample      0.1.1     \n#> ✔ dials        1.0.0.9000     ✔ tibble       3.1.7     \n#> ✔ dplyr        1.0.9          ✔ tidyr        1.2.0     \n#> ✔ infer        1.0.0          ✔ tune         0.2.0.9002\n#> ✔ modeldata    0.1.1          ✔ workflows    0.2.6.9001\n#> ✔ parsnip      1.0.0.9000     ✔ workflowsets 0.2.1     \n#> ✔ purrr        0.3.4          ✔ yardstick    1.0.0.9000\n#> ✔ recipes      0.2.0.9001\n#> ── Conflicts ─────────────────────────────── tidymodels_conflicts() ──\n#> ✖ purrr::discard() masks scales::discard()\n#> ✖ dplyr::filter()  masks stats::filter()\n#> ✖ dplyr::lag()     masks stats::lag()\n#> ✖ recipes::step()  masks stats::step()\n#> • Learn how to get started at https://www.tidymodels.org/start/"
+  },
+  {
+    "objectID": "slides/1-introduction.html#managing-name-conflicts",
+    "href": "slides/1-introduction.html#managing-name-conflicts",
+    "title": "Introduction to tidymodels",
+    "section": "Managing name conflicts",
+    "text": "Managing name conflicts\n\ntidymodels_prefer(quiet = FALSE)\n#> [conflicted] Will prefer dplyr::filter over any other package\n#> [conflicted] Will prefer dplyr::select over any other package\n#> [conflicted] Will prefer dplyr::slice over any other package\n#> [conflicted] Will prefer dplyr::rename over any other package\n#> [conflicted] Will prefer dials::neighbors over any other package\n#> [conflicted] Will prefer parsnip::fit over any other package\n#> [conflicted] Will prefer parsnip::bart over any other package\n#> [conflicted] Will prefer parsnip::pls over any other package\n#> [conflicted] Will prefer purrr::map over any other package\n#> [conflicted] Will prefer recipes::step over any other package\n#> [conflicted] Will prefer themis::step_downsample over any other package\n#> [conflicted] Will prefer themis::step_upsample over any other package\n#> [conflicted] Will prefer tune::tune over any other package\n#> [conflicted] Will prefer yardstick::precision over any other package\n#> [conflicted] Will prefer yardstick::recall over any other package\n#> [conflicted] Will prefer yardstick::spec over any other package\n#> ── Conflicts ────────────────────────────────── tidymodels_prefer() ──"
+  },
+  {
+    "objectID": "slides/1-introduction.html#our-dataset-today",
+    "href": "slides/1-introduction.html#our-dataset-today",
+    "title": "Introduction to tidymodels",
+    "section": "Our dataset today",
+    "text": "Our dataset today"
+  },
+  {
+    "objectID": "slides/1-introduction.html#your-turn",
+    "href": "slides/1-introduction.html#your-turn",
+    "title": "Introduction to tidymodels",
+    "section": "Your turn",
+    "text": "Your turn\n\n\n\n\nExplore the data.\n\nlibrary(tidymodels)\ntidymodels_prefer()\n\ndata(\"ad_data\", package = \"modeldata\")\nalz <- ad_data\n\n\n\n\n\n\n10:00"
+  },
+  {
+    "objectID": "slides/1-introduction.html#alzheimers-disease-data",
+    "href": "slides/1-introduction.html#alzheimers-disease-data",
+    "title": "Introduction to tidymodels",
+    "section": "Alzheimer’s disease data",
+    "text": "Alzheimer’s disease data\nData from a clinical trial of individuals with well-characterized cognitive impairment, and age-matched control participants.\n\n# install.packages(\"modeldata\")\nlibrary(modeldata)\ndata(\"ad_data\")\nalz <- ad_data\n\nglimpse(alz)\n#> Rows: 333\n#> Columns: 131\n#> $ ACE_CD143_Angiotensin_Converti   <dbl> 2.0031003, 1.5618560, 1.5206598, 1.68…\n#> $ ACTH_Adrenocorticotropic_Hormon  <dbl> -1.3862944, -1.3862944, -1.7147984, -…\n#> $ AXL                              <dbl> 1.09838668, 0.68328157, -0.14527630, …\n#> $ Adiponectin                      <dbl> -5.360193, -5.020686, -5.809143, -5.1…\n#> $ Alpha_1_Antichymotrypsin         <dbl> 1.7404662, 1.4586150, 1.1939225, 1.28…\n#> $ Alpha_1_Antitrypsin              <dbl> -12.631361, -11.909882, -13.642963, -…\n#> $ Alpha_1_Microglobulin            <dbl> -2.577022, -3.244194, -2.882404, -3.1…\n#> $ Alpha_2_Macroglobulin            <dbl> -72.65029, -154.61228, -136.52918, -9…\n#> $ Angiopoietin_2_ANG_2             <dbl> 1.06471074, 0.74193734, 0.83290912, 0…\n#> $ Angiotensinogen                  <dbl> 2.510547, 2.457283, 1.976365, 2.37608…\n#> $ Apolipoprotein_A_IV              <dbl> -1.427116, -1.660731, -1.660731, -2.1…\n#> $ Apolipoprotein_A1                <dbl> -7.402052, -7.047017, -7.684284, -8.0…\n#> $ Apolipoprotein_A2                <dbl> -0.26136476, -0.86750057, -0.65392647…\n#> $ Apolipoprotein_B                 <dbl> -4.624044, -6.747507, -3.976069, -6.5…\n#> $ Apolipoprotein_CI                <dbl> -1.2729657, -1.2729657, -1.7147984, -…\n#> $ Apolipoprotein_CIII              <dbl> -2.312635, -2.343407, -2.748872, -2.9…\n#> $ Apolipoprotein_D                 <dbl> 2.0794415, 1.3350011, 1.3350011, 1.43…\n#> $ Apolipoprotein_E                 <dbl> 3.7545215, 3.0971187, 2.7530556, 2.37…\n#> $ Apolipoprotein_H                 <dbl> -0.15734908, -0.57539617, -0.34483937…\n#> $ B_Lymphocyte_Chemoattractant_BL  <dbl> 2.2969819, 1.6731213, 1.6731213, 1.98…\n#> $ BMP_6                            <dbl> -2.200744, -1.728053, -2.062421, -1.9…\n#> $ Beta_2_Microglobulin             <dbl> 0.69314718, 0.47000363, 0.33647224, 0…\n#> $ Betacellulin                     <int> 34, 53, 49, 52, 67, 51, 41, 42, 58, 5…\n#> $ C_Reactive_Protein               <dbl> -4.074542, -6.645391, -8.047190, -6.2…\n#> $ CD40                             <dbl> -0.7964147, -1.2733760, -1.2415199, -…\n#> $ CD5L                             <dbl> 0.09531018, -0.67334455, 0.09531018, …\n#> $ Calbindin                        <dbl> 33.21363, 25.27636, 22.16609, 23.4558…\n#> $ Calcitonin                       <dbl> 1.3862944, 3.6109179, 2.1162555, -0.1…\n#> $ CgA                              <dbl> 397.6536, 465.6759, 347.8639, 334.234…\n#> $ Clusterin_Apo_J                  <dbl> 3.555348, 3.044522, 2.772589, 2.83321…\n#> $ Complement_3                     <dbl> -10.36305, -16.10824, -16.10824, -13.…\n#> $ Complement_Factor_H              <dbl> 3.5737252, 3.6000471, 4.4745686, 3.09…\n#> $ Connective_Tissue_Growth_Factor  <dbl> 0.5306283, 0.5877867, 0.6418539, 0.53…\n#> $ Cortisol                         <dbl> 10.0, 12.0, 10.0, 14.0, 11.0, 13.0, 4…\n#> $ Creatine_Kinase_MB               <dbl> -1.710172, -1.751002, -1.383559, -1.6…\n#> $ Cystatin_C                       <dbl> 9.041922, 9.067624, 8.954157, 9.58190…\n#> $ EGF_R                            <dbl> -0.1354543, -0.3700474, -0.7329871, -…\n#> $ EN_RAGE                          <dbl> -3.688879, -3.816713, -4.755993, -2.9…\n#> $ ENA_78                           <dbl> -1.349543, -1.356595, -1.390672, -1.3…\n#> $ Eotaxin_3                        <int> 53, 62, 62, 44, 64, 57, 64, 64, 64, 7…\n#> $ FAS                              <dbl> -0.08338161, -0.52763274, -0.63487827…\n#> $ FSH_Follicle_Stimulation_Hormon  <dbl> -0.6516715, -1.6272839, -1.5630004, -…\n#> $ Fas_Ligand                       <dbl> 3.1014922, 2.9788133, 1.3600098, 2.53…\n#> $ Fatty_Acid_Binding_Protein       <dbl> 2.5208712, 2.2477966, 0.9063009, 0.62…\n#> $ Ferritin                         <dbl> 3.329165, 3.932959, 3.176872, 3.13809…\n#> $ Fetuin_A                         <dbl> 1.2809338, 1.1939225, 1.4109870, 0.74…\n#> $ Fibrinogen                       <dbl> -7.035589, -8.047190, -7.195437, -7.7…\n#> $ GRO_alpha                        <dbl> 1.381830, 1.372438, 1.412679, 1.37243…\n#> $ Gamma_Interferon_induced_Monokin <dbl> 2.949822, 2.721793, 2.762231, 2.88547…\n#> $ Glutathione_S_Transferase_alpha  <dbl> 1.0641271, 0.8670202, 0.8890150, 0.70…\n#> $ HB_EGF                           <dbl> 6.559746, 8.754531, 7.745463, 5.94943…\n#> $ HCC_4                            <dbl> -3.036554, -4.074542, -3.649659, -3.8…\n#> $ Hepatocyte_Growth_Factor_HGF     <dbl> 0.58778666, 0.53062825, 0.09531018, 0…\n#> $ I_309                            <dbl> 3.433987, 3.135494, 2.397895, 3.36729…\n#> $ ICAM_1                           <dbl> -0.1907787, -0.4620172, -0.4620172, -…\n#> $ IGF_BP_2                         <dbl> 5.609472, 5.347108, 5.181784, 5.42495…\n#> $ IL_11                            <dbl> 5.121987, 4.936704, 4.665910, 6.22393…\n#> $ IL_13                            <dbl> 1.282549, 1.269463, 1.274133, 1.30754…\n#> $ IL_16                            <dbl> 4.192081, 2.876338, 2.616102, 2.44105…\n#> $ IL_17E                           <dbl> 5.731246, 6.705891, 4.149327, 4.69584…\n#> $ IL_1alpha                        <dbl> -6.571283, -8.047190, -8.180721, -7.6…\n#> $ IL_3                             <dbl> -3.244194, -3.912023, -4.645992, -4.2…\n#> $ IL_4                             <dbl> 2.484907, 2.397895, 1.824549, 1.48160…\n#> $ IL_5                             <dbl> 1.09861229, 0.69314718, -0.24846136, …\n#> $ IL_6                             <dbl> 0.26936976, 0.09622438, 0.18568645, -…\n#> $ IL_6_Receptor                    <dbl> 0.64279595, 0.43115645, 0.09668586, 0…\n#> $ IL_7                             <dbl> 4.8050453, 3.7055056, 1.0056222, 2.33…\n#> $ IL_8                             <dbl> 1.711325, 1.675557, 1.691393, 1.71994…\n#> $ IP_10_Inducible_Protein_10       <dbl> 6.242223, 5.686975, 5.049856, 5.60211…\n#> $ IgA                              <dbl> -6.812445, -6.377127, -6.319969, -7.6…\n#> $ Insulin                          <dbl> -0.6258253, -0.9431406, -1.4466191, -…\n#> $ Kidney_Injury_Molecule_1_KIM_1   <dbl> -1.204295, -1.197703, -1.191191, -1.2…\n#> $ LOX_1                            <dbl> 1.7047481, 1.5260563, 1.1631508, 1.22…\n#> $ Leptin                           <dbl> -1.5290628, -1.4660558, -1.6622675, -…\n#> $ Lipoprotein_a                    <dbl> -4.268698, -4.933674, -5.843045, -4.9…\n#> $ MCP_1                            <dbl> 6.740519, 6.849066, 6.767343, 6.78105…\n#> $ MCP_2                            <dbl> 1.9805094, 1.8088944, 0.4005958, 1.98…\n#> $ MIF                              <dbl> -1.237874, -1.897120, -2.302585, -1.6…\n#> $ MIP_1alpha                       <dbl> 4.968453, 3.690160, 4.049508, 4.92856…\n#> $ MIP_1beta                        <dbl> 3.258097, 3.135494, 2.397895, 3.21887…\n#> $ MMP_2                            <dbl> 4.478566, 3.781473, 2.866631, 2.96851…\n#> $ MMP_3                            <dbl> -2.207275, -2.465104, -2.302585, -1.7…\n#> $ MMP10                            <dbl> -3.270169, -3.649659, -2.733368, -4.0…\n#> $ MMP7                             <dbl> -3.7735027, -5.9681907, -4.0302269, -…\n#> $ Myoglobin                        <dbl> -1.89711998, -0.75502258, -1.38629436…\n#> $ NT_proBNP                        <dbl> 4.553877, 4.219508, 4.248495, 4.11087…\n#> $ NrCAM                            <dbl> 5.003946, 5.209486, 4.744932, 4.96981…\n#> $ Osteopontin                      <dbl> 5.356586, 6.003887, 5.017280, 5.76832…\n#> $ PAI_1                            <dbl> 1.00350156, -0.03059880, 0.43837211, …\n#> $ PAPP_A                           <dbl> -2.902226, -2.813276, -2.935541, -2.7…\n#> $ PLGF                             <dbl> 4.442651, 4.025352, 4.510860, 3.43398…\n#> $ PYY                              <dbl> 3.218876, 3.135494, 2.890372, 2.83321…\n#> $ Pancreatic_polypeptide           <dbl> 0.57878085, 0.33647224, -0.89159812, …\n#> $ Prolactin                        <dbl> 0.00000000, -0.51082562, -0.13926207,…\n#> $ Prostatic_Acid_Phosphatase       <dbl> -1.620527, -1.739232, -1.636682, -1.7…\n#> $ Protein_S                        <dbl> -1.784998, -2.463991, -2.259135, -2.7…\n#> $ Pulmonary_and_Activation_Regulat <dbl> -0.8439701, -2.3025851, -1.6607312, -…\n#> $ RANTES                           <dbl> -6.214608, -6.938214, -6.645391, -5.9…\n#> $ Resistin                         <dbl> -16.475315, -16.025283, -16.475315, -…\n#> $ S100b                            <dbl> 1.5618560, 1.7566212, 1.4357282, 1.25…\n#> $ SGOT                             <dbl> -0.94160854, -0.65392647, 0.33647224,…\n#> $ SHBG                             <dbl> -1.897120, -1.560648, -2.207275, -3.1…\n#> $ SOD                              <dbl> 5.609472, 5.814131, 5.723585, 5.77144…\n#> $ Serum_Amyloid_P                  <dbl> -5.599422, -6.119298, -5.381699, -6.6…\n#> $ Sortilin                         <dbl> 4.908629, 5.478731, 3.810182, 3.40217…\n#> $ Stem_Cell_Factor                 <dbl> 4.174387, 3.713572, 3.433987, 3.95124…\n#> $ TGF_alpha                        <dbl> 8.649098, 11.331619, 10.858497, 9.454…\n#> $ TIMP_1                           <dbl> 15.204651, 11.266499, 12.282857, 11.1…\n#> $ TNF_RII                          <dbl> -0.06187540, -0.32850407, -0.41551544…\n#> $ TRAIL_R3                         <dbl> -0.1829004, -0.5007471, -0.9240345, -…\n#> $ TTR_prealbumin                   <dbl> 2.944439, 2.833213, 2.944439, 2.94443…\n#> $ Tamm_Horsfall_Protein_THP        <dbl> -3.095810, -3.111190, -3.166721, -3.1…\n#> $ Thrombomodulin                   <dbl> -1.340566, -1.675252, -1.534276, -1.9…\n#> $ Thrombopoietin                   <dbl> -0.1026334, -0.6733501, -0.9229670, -…\n#> $ Thymus_Expressed_Chemokine_TECK  <dbl> 4.149327, 3.810182, 2.791992, 4.03728…\n#> $ Thyroid_Stimulating_Hormone      <dbl> -3.863233, -4.828314, -4.990833, -4.8…\n#> $ Thyroxine_Binding_Globulin       <dbl> -1.4271164, -1.6094379, -1.8971200, -…\n#> $ Tissue_Factor                    <dbl> 2.04122033, 2.02814825, 1.43508453, 2…\n#> $ Transferrin                      <dbl> 3.332205, 2.890372, 2.890372, 2.89037…\n#> $ Trefoil_Factor_3_TFF3            <dbl> -3.381395, -3.912023, -3.729701, -3.8…\n#> $ VCAM_1                           <dbl> 3.258097, 2.708050, 2.639057, 2.77258…\n#> $ VEGF                             <dbl> 22.03456, 18.60184, 17.47619, 17.5456…\n#> $ Vitronectin                      <dbl> -0.04082199, -0.38566248, -0.22314355…\n#> $ von_Willebrand_Factor            <dbl> -3.146555, -3.863233, -3.540459, -3.8…\n#> $ age                              <dbl> 0.9876238, 0.9861496, 0.9866667, 0.98…\n#> $ tau                              <dbl> 6.297754, 6.659294, 6.270988, 6.15273…\n#> $ p_tau                            <dbl> 4.348108, 4.859967, 4.400247, 4.49488…\n#> $ Ab_42                            <dbl> 12.019678, 11.015759, 12.302271, 12.3…\n#> $ male                             <dbl> 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1…\n#> $ Genotype                         <fct> E3E3, E3E4, E3E4, E3E4, E3E3, E4E4, E…\n#> $ Class                            <fct> Control, Control, Control, Control, C…"
+  },
+  {
+    "objectID": "slides/1-introduction.html#alzheimers-disease-data-1",
+    "href": "slides/1-introduction.html#alzheimers-disease-data-1",
+    "title": "Introduction to tidymodels",
+    "section": "Alzheimer’s disease data",
+    "text": "Alzheimer’s disease data\n\n\n\n1 categorical outcome: Class\n130 predictors\n126 protein measurements\nalso: age, male, Genotype"
+  },
+  {
+    "objectID": "slides/1-introduction.html#schedule-for-today",
+    "href": "slides/1-introduction.html#schedule-for-today",
+    "title": "Introduction to tidymodels",
+    "section": "Schedule for today",
+    "text": "Schedule for today\n\nA minimal model\nA better workflow\nA tuned model\n\n\n\nget through the fundamentals\nmake our model better\nlet the computer make our model better"
+  },
+  {
+    "objectID": "slides/2-model.html#hello-world",
+    "href": "slides/2-model.html#hello-world",
+    "title": "Building models",
+    "section": "hello world",
+    "text": "hello world\n\ngoal: predict well on unseen data!\ndata budget:\n\ninitial split: graph and code\nonly use test set once!\n\nmodels via parsnip\n\nmodel (glm): spec, fit, predict, measure. notice difference in performance between train and test?\n2nd model (them. decision tree?): spec, fit - but if we were to measure on test set again, it would not be unseen. we’re then optimizing for performance on that one test set!\n\nresampling\n\nsome graphs to illustrate, the analysis/assessment one for sure\nI do glm: vfold_cv(), fit_resamples()\nthey do their model\nlet’s compare"
+  },
+  {
+    "objectID": "slides/2-model.html#data-splitting-and-spending",
+    "href": "slides/2-model.html#data-splitting-and-spending",
+    "title": "Building models",
+    "section": "Data splitting and spending",
+    "text": "Data splitting and spending\nFor machine learning, we typically split data into training and test sets:\n\n\nThe training set is used to estimate model parameters.\nThe test set is used to find an independent assessment of model performance.\n\n\n\nDo not 🚫 use the test set during training."
+  },
+  {
+    "objectID": "slides/2-model.html#data-splitting-and-spending-1",
+    "href": "slides/2-model.html#data-splitting-and-spending-1",
+    "title": "Building models",
+    "section": "Data splitting and spending",
+    "text": "Data splitting and spending\n\nSpending too much data in training prevents us from computing a good assessment of predictive performance.\nSpending too much data in testing prevents us from computing a good estimate of model parameters."
+  },
+  {
+    "objectID": "slides/2-model.html#data-splitting-and-spending-2",
+    "href": "slides/2-model.html#data-splitting-and-spending-2",
+    "title": "Building models",
+    "section": "Data splitting and spending ",
+    "text": "Data splitting and spending \n\nset.seed(123)\nalz_split <- initial_split(alz, strata = Class, prop = .9)\nalz_split\n#> <Analysis/Assess/Total>\n#> <298/35/333>\n\n\n\nother split function: initial_time_split()\npoint out sizes"
+  },
+  {
+    "objectID": "slides/2-model.html#data-splitting-and-spending-3",
+    "href": "slides/2-model.html#data-splitting-and-spending-3",
+    "title": "Building models",
+    "section": "Data splitting and spending ",
+    "text": "Data splitting and spending \n\nalz_train <- training(alz_split) \nalz_test <- testing(alz_split)\n\nc(nrow(alz_train), nrow(alz_test))\n#> [1] 298  35"
+  },
+  {
+    "objectID": "slides/2-model.html#your-turn",
+    "href": "slides/2-model.html#your-turn",
+    "title": "Building models",
+    "section": "Your turn",
+    "text": "Your turn\n\n\nHow do you fit a linear model in R? How many different ways can you think of?\n\n\n\n03:00\n\n\n\n\n\nlm for linear model\nglmnet for regularized regression\nkeras for regression using TensorFlow\nstan for Bayesian regression\nspark for large data sets"
+  },
+  {
+    "objectID": "slides/2-model.html#to-specify-a-model",
+    "href": "slides/2-model.html#to-specify-a-model",
+    "title": "Building models",
+    "section": "To specify a model ",
+    "text": "To specify a model \n\n\n\nChoose a model\nSpecify an engine\nSet the mode\n\n\n\nlogistic_reg() %>% \n  set_engine(\"glm\") %>% \n  set_mode(\"classification\")\n#> Logistic Regression Model Specification (classification)\n#> \n#> Computational engine: glm"
+  },
+  {
+    "objectID": "slides/2-model.html#to-specify-a-model-1",
+    "href": "slides/2-model.html#to-specify-a-model-1",
+    "title": "Building models",
+    "section": "To specify a model ",
+    "text": "To specify a model \n\n\n\nChoose a model\nSpecify an engine\nSet the mode\n\n\n\nlogistic_reg() %>% \n  set_engine(\"glm\") %>% \n  set_mode(\"classification\")\n#> Logistic Regression Model Specification (classification)\n#> \n#> Computational engine: glm"
+  },
+  {
+    "objectID": "slides/2-model.html#to-specify-a-model-2",
+    "href": "slides/2-model.html#to-specify-a-model-2",
+    "title": "Building models",
+    "section": "To specify a model ",
+    "text": "To specify a model \n\n\n\nChoose a model\nSpecify an engine\nSet the mode\n\n\n\nlogistic_reg() %>% \n  set_engine(\"glm\") %>% \n  set_mode(\"classification\")\n#> Logistic Regression Model Specification (classification)\n#> \n#> Computational engine: glm\n\n\n\n\nAll available models are listed at https://www.tidymodels.org/find/parsnip/\n\n\nmany models\nmany engines\nin parsnip and extension packages"
+  },
+  {
+    "objectID": "slides/2-model.html#to-fit-a-model",
+    "href": "slides/2-model.html#to-fit-a-model",
+    "title": "Building models",
+    "section": "To fit a model",
+    "text": "To fit a model\nNow we’ve specified a model\n\nlr_spec <- logistic_reg() %>% \n  set_engine(\"glm\") %>% \n  set_mode(\"classification\")\n\n\nHow do we use it?\n\n\nWe can fit it to our data\n\nlr_fit <- lr_spec %>% \n  fit(Class ~ tau + VEGF, \n      data = alz)\n\nlr_fit\n#> parsnip model object\n#> \n#> \n#> Call:  stats::glm(formula = Class ~ tau + VEGF, family = stats::binomial, \n#>     data = data)\n#> \n#> Coefficients:\n#> (Intercept)          tau         VEGF  \n#>      8.9747      -4.0095       0.9337  \n#> \n#> Degrees of Freedom: 332 Total (i.e. Null);  330 Residual\n#> Null Deviance:       390.6 \n#> Residual Deviance: 236.3     AIC: 242.3"
+  },
+  {
+    "objectID": "slides/2-model.html#to-use-a-model",
+    "href": "slides/2-model.html#to-use-a-model",
+    "title": "Building models",
+    "section": "To use a model",
+    "text": "To use a model\nNow we’ve specified a model - how do we use it?\n\nlr_spec <- \n  logistic_reg() %>% \n  set_engine(\"glm\") %>% \n  set_mode(\"classification\")"
+  },
+  {
+    "objectID": "slides/2-model.html#to-use-a-model-1",
+    "href": "slides/2-model.html#to-use-a-model-1",
+    "title": "Building models",
+    "section": "To use a model",
+    "text": "To use a model\nWe can fit it to our data\n\nlr_fit <- \n  lr_spec %>% \n  fit(Class ~ tau + VEGF, \n      data = alz)\n\nlr_fit\n#> parsnip model object\n#> \n#> \n#> Call:  stats::glm(formula = Class ~ tau + VEGF, family = stats::binomial, \n#>     data = data)\n#> \n#> Coefficients:\n#> (Intercept)          tau         VEGF  \n#>      8.9747      -4.0095       0.9337  \n#> \n#> Degrees of Freedom: 332 Total (i.e. Null);  330 Residual\n#> Null Deviance:       390.6 \n#> Residual Deviance: 236.3     AIC: 242.3"
+  },
+  {
+    "objectID": "slides/2-model.html#to-use-a-model-2",
+    "href": "slides/2-model.html#to-use-a-model-2",
+    "title": "Building models",
+    "section": "To use a model",
+    "text": "To use a model\nWe can predict new data with the fitted model\n\nalz_new <- \n  tibble(tau = c(5, 6, 7), \n         VEGF = c(15, 15, 15),\n         Class = c(\"Control\", \"Control\", \"Impaired\")) %>% \n  mutate(Class = factor(Class, levels = c(\"Impaired\", \"Control\")))\n\nlr_fit %>% \n  predict(new_data = alz_new)\n#> # A tibble: 3 × 1\n#>   .pred_class\n#>   <fct>      \n#> 1 Control    \n#> 2 Impaired   \n#> 3 Impaired"
+  },
+  {
+    "objectID": "slides/2-model.html#to-use-a-model-3",
+    "href": "slides/2-model.html#to-use-a-model-3",
+    "title": "Building models",
+    "section": "To use a model  ",
+    "text": "To use a model  \nWe can predict new data with the fitted model and assess performance\n\nalz_new <- \n  tibble(tau = c(5, 6, 7), \n         VEGF = c(15, 15, 15),\n         Class = c(\"Control\", \"Control\", \"Impaired\")) %>% \n  mutate(Class = factor(Class, levels = c(\"Impaired\", \"Control\")))\n\nlr_fit %>% \n  predict(new_data = alz_new) %>% \n  bind_cols(alz_new) %>% \n  accuracy(truth = Class, estimate = .pred_class)\n#> # A tibble: 1 × 3\n#>   .metric  .estimator .estimate\n#>   <chr>    <chr>          <dbl>\n#> 1 accuracy binary         0.667\n\n\nwe can just do bind_cols() so easily because of the prediction format!"
+  },
+  {
+    "objectID": "slides/2-model.html#the-tidymodels-prediction-guarantee",
+    "href": "slides/2-model.html#the-tidymodels-prediction-guarantee",
+    "title": "Building models",
+    "section": "The tidymodels prediction guarantee! ",
+    "text": "The tidymodels prediction guarantee! \n\n\nThe predictions will always be inside a tibble\nThe column names and types are unsurprising and predictable\nThe number of rows in new_data and the output are the same"
+  },
+  {
+    "objectID": "slides/2-model.html#your-turn-1",
+    "href": "slides/2-model.html#your-turn-1",
+    "title": "Building models",
+    "section": "Your turn",
+    "text": "Your turn\n\n\nSplit the Alzheimer’s data and fit a decision tree.\nWhat is the performance on the test set?\n\nalz_split <- initial_split(alz, strata = Class, prop = .9)\nalz_train <- training(alz_split)\nalz_test <- testing(alz_split)\n\n\n\n\n10:00"
+  },
+  {
+    "objectID": "slides/2-model.html#cross-validation",
+    "href": "slides/2-model.html#cross-validation",
+    "title": "Building models",
+    "section": "Cross-validation",
+    "text": "Cross-validation"
+  },
+  {
+    "objectID": "slides/2-model.html#cross-validation-1",
+    "href": "slides/2-model.html#cross-validation-1",
+    "title": "Building models",
+    "section": "Cross-validation",
+    "text": "Cross-validation"
+  },
+  {
+    "objectID": "slides/2-model.html#resampling-1",
+    "href": "slides/2-model.html#resampling-1",
+    "title": "Building models",
+    "section": "Resampling ",
+    "text": "Resampling \nWhat is in this?\n\nset.seed(100)\nalz_folds <- \n    vfold_cv(alz_train, v = 5, strata = Class)\nalz_folds\n#> #  5-fold cross-validation using stratification \n#> # A tibble: 5 × 2\n#>   splits           id   \n#>   <list>           <chr>\n#> 1 <split [237/61]> Fold1\n#> 2 <split [238/60]> Fold2\n#> 3 <split [239/59]> Fold3\n#> 4 <split [239/59]> Fold4\n#> 5 <split [239/59]> Fold5\n\n\n\nother types of resampling: boostrap, validation split\ndefault is v = 10 but we don’t have sooo much data"
+  },
+  {
+    "objectID": "slides/2-model.html#we-need-a-new-way-to-fit",
+    "href": "slides/2-model.html#we-need-a-new-way-to-fit",
+    "title": "Building models",
+    "section": "We need a new way to fit",
+    "text": "We need a new way to fit\n\nsplit1 <- alz_folds$splits[[1]]\nsplit1_analysis <- analysis(split1)\nsplit1_assessment <- assessment(split1)\ntree_mod %>% \n  fit(Class ~ ., data = split1_analysis) %>% \n  predict(split1_assessment) %>% \n  bind_cols(split1_assessment) %>% \n  accuracy(Class, .pred_class)\n# rinse and repeat\nsplit2 <- ..."
+  },
+  {
+    "objectID": "slides/2-model.html#evaluating-model-performance",
+    "href": "slides/2-model.html#evaluating-model-performance",
+    "title": "Building models",
+    "section": "Evaluating model performance",
+    "text": "Evaluating model performance\n\nlr_spec %>% \n  fit_resamples(\n    Class ~ tau + VEGF, \n    resamples = alz_folds\n  )\n#> # Resampling results\n#> # 5-fold cross-validation using stratification \n#> # A tibble: 5 × 4\n#>   splits           id    .metrics         .notes          \n#>   <list>           <chr> <list>           <list>          \n#> 1 <split [237/61]> Fold1 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 2 <split [238/60]> Fold2 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 3 <split [239/59]> Fold3 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 4 <split [239/59]> Fold4 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 5 <split [239/59]> Fold5 <tibble [2 × 4]> <tibble [0 × 3]>"
+  },
+  {
+    "objectID": "slides/2-model.html#your-turn-2",
+    "href": "slides/2-model.html#your-turn-2",
+    "title": "Building models",
+    "section": "Your turn",
+    "text": "Your turn\n\n\nWhat is the average performance of the decision tree?\nUse cross-validation.\n\n\n\n10:00"
+  },
+  {
+    "objectID": "slides/3-workflow.html#hello-world",
+    "href": "slides/3-workflow.html#hello-world",
+    "title": "Building better workflows",
+    "section": "hello world",
+    "text": "hello world\n\nbetter data to train on:\n\nrecipes for glmnet: dummies, zv, normalize\n\nfeature engineering is part of the modelling workflow\n\nshow graph\n\nworkflows: fit, predict, fit resamples\ndebugging a recipe\nthem: use KNN for recipe/workflow\nusemodels?"
+  },
+  {
+    "objectID": "slides/3-workflow.html#hi",
+    "href": "slides/3-workflow.html#hi",
+    "title": "Building better workflows",
+    "section": "hi",
+    "text": "hi\n\nlibrary(tidymodels)\n\ndata(\"ad_data\", package = \"modeldata\")\nalz <- ad_data\nhead(alz)\n#> # A tibble: 6 × 131\n#>   ACE_CD143_Angiotensin_Co… ACTH_Adrenocort…    AXL Adiponectin Alpha_1_Antichy…\n#>                       <dbl>            <dbl>  <dbl>       <dbl>            <dbl>\n#> 1                     2.00            -1.39   1.10        -5.36             1.74\n#> 2                     1.56            -1.39   0.683       -5.02             1.46\n#> 3                     1.52            -1.71  -0.145       -5.81             1.19\n#> 4                     1.68            -1.61   0.683       -5.12             1.28\n#> 5                     2.40            -0.968  0.191       -4.78             2.13\n#> 6                     0.431           -1.27  -0.222       -5.22             1.31\n#> # … with 126 more variables: Alpha_1_Antitrypsin <dbl>,\n#> #   Alpha_1_Microglobulin <dbl>, Alpha_2_Macroglobulin <dbl>,\n#> #   Angiopoietin_2_ANG_2 <dbl>, Angiotensinogen <dbl>,\n#> #   Apolipoprotein_A_IV <dbl>, Apolipoprotein_A1 <dbl>,\n#> #   Apolipoprotein_A2 <dbl>, Apolipoprotein_B <dbl>, Apolipoprotein_CI <dbl>,\n#> #   Apolipoprotein_CIII <dbl>, Apolipoprotein_D <dbl>, Apolipoprotein_E <dbl>,\n#> #   Apolipoprotein_H <dbl>, B_Lymphocyte_Chemoattractant_BL <dbl>, …"
+  },
+  {
+    "objectID": "slides/3-workflow.html#preprocessing-options",
+    "href": "slides/3-workflow.html#preprocessing-options",
+    "title": "Building better workflows",
+    "section": "Preprocessing options",
+    "text": "Preprocessing options\n\nEncode categorical predictors\nCenter and scale variables\nHandle class imbalance\nImpute missing data\nPerform dimensionality reduction\nA lot more!\n\n\n\nrecipes is an extensible framework\ntextrecipes for preprocessing text data"
+  },
+  {
+    "objectID": "slides/3-workflow.html#penalized-logistic-regression",
+    "href": "slides/3-workflow.html#penalized-logistic-regression",
+    "title": "Building better workflows",
+    "section": "Penalized logistic regression",
+    "text": "Penalized logistic regression\n\nlr_pen_spec <- \n  logistic_reg(penalty = 0.1) %>% \n  set_engine(\"glmnet\") %>% \n  set_mode(\"classification\")\n\n\n\nrequires all numeric predictors\nand all should to be centered and scaled"
+  },
+  {
+    "objectID": "slides/3-workflow.html#what-do-you-consider-the-estimation-part",
+    "href": "slides/3-workflow.html#what-do-you-consider-the-estimation-part",
+    "title": "Building better workflows",
+    "section": "What do you consider the estimation part?",
+    "text": "What do you consider the estimation part?\n\n\nThere are cases where this could go really wrong:\n\nPoor estimation of performance (by treating the PCA parts as known)\nSelection bias in feature selection\nInformation leakage\n\nthe more complex/powerful the preprocessing is, the more this is a problem!"
+  },
+  {
+    "objectID": "slides/3-workflow.html#what-do-you-consider-the-estimation-part-1",
+    "href": "slides/3-workflow.html#what-do-you-consider-the-estimation-part-1",
+    "title": "Building better workflows",
+    "section": "What do you consider the estimation part?",
+    "text": "What do you consider the estimation part?\n\n\n\napplies to train vs test\nalso applies to all the cv folds!\ntidymodels design principle is to provide tools that make good modelling practice easy: “pit of success”"
+  },
+  {
+    "objectID": "slides/4-tuning.html#hello-world",
+    "href": "slides/4-tuning.html#hello-world",
+    "title": "Tuning models",
+    "section": "hello world",
+    "text": "hello world\n\nplaceholder: glmnet + tunable recipe\ngrids: space-filling manually\ntune_grid = grid + fit_resamples\ninspect results\ndecide on spec (model type, recipe, hyperparameter values)\nfinalize:\nfinal performance assessment\nuse final model: predict or deploy"
+  },
+  {
+    "objectID": "slides/4-tuning.html#helpful-resources",
+    "href": "slides/4-tuning.html#helpful-resources",
+    "title": "Tuning models",
+    "section": "Helpful resources",
+    "text": "Helpful resources\n\nOverview of tidymodels with articles covering different use cases: https://tidymodels.org\nTidy Modeling with R book: https://www.tmwr.org\nusemodels to create code snippets https://usemodels.tidymodels.org/"
+  },
+  {
+    "objectID": "slides/3-workflow.html#introducing-workflow",
+    "href": "slides/3-workflow.html#introducing-workflow",
+    "title": "Building better workflows",
+    "section": "Introducing workflow()",
+    "text": "Introducing workflow()\n\nalz_wfl <- workflow() %>% \n  add_model(lr_pen_spec) %>% \n  add_recipe(alz_rec)"
+  },
+  {
+    "objectID": "slides/3-workflow.html#use-a-workflow",
+    "href": "slides/3-workflow.html#use-a-workflow",
+    "title": "Building better workflows",
+    "section": "Use a workflow",
+    "text": "Use a workflow\n\nalz_wflow %>% \n  fit(alz_train) %>% \n  predict(alz_test)\n#> # A tibble: 35 × 1\n#>    .pred_class\n#>    <fct>      \n#>  1 Control    \n#>  2 Control    \n#>  3 Control    \n#>  4 Control    \n#>  5 Control    \n#>  6 Control    \n#>  7 Control    \n#>  8 Control    \n#>  9 Control    \n#> 10 Control    \n#> # … with 25 more rows"
+  },
+  {
+    "objectID": "slides/3-workflow.html#use-a-workflow-1",
+    "href": "slides/3-workflow.html#use-a-workflow-1",
+    "title": "Building better workflows",
+    "section": "Use a workflow",
+    "text": "Use a workflow\n\nalz_res <- alz_wflow %>% \n  fit_resamples(alz_folds) \nalz_res\n#> # Resampling results\n#> # 10-fold cross-validation using stratification \n#> # A tibble: 10 × 4\n#>    splits           id     .metrics         .notes          \n#>    <list>           <chr>  <list>           <list>          \n#>  1 <split [267/31]> Fold01 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  2 <split [268/30]> Fold02 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  3 <split [268/30]> Fold03 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  4 <split [268/30]> Fold04 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  5 <split [268/30]> Fold05 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  6 <split [268/30]> Fold06 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  7 <split [268/30]> Fold07 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  8 <split [269/29]> Fold08 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  9 <split [269/29]> Fold09 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 10 <split [269/29]> Fold10 <tibble [2 × 4]> <tibble [0 × 3]>"
+  },
+  {
+    "objectID": "slides/3-workflow.html#your-turn",
+    "href": "slides/3-workflow.html#your-turn",
+    "title": "Building better workflows",
+    "section": "Your turn",
+    "text": "Your turn\n\n\nBuild a workflow with a nearest neighbor model and an appropriate recipe.\nWhat are the performance estimates via 10-fold cross-validation?\n\n\n\n10:00"
+  },
+  {
+    "objectID": "slides/3-workflow.html#debugging-a-recipe",
+    "href": "slides/3-workflow.html#debugging-a-recipe",
+    "title": "Building better workflows",
+    "section": "Debugging a recipe",
+    "text": "Debugging a recipe\n90% of the time, you will want to use a workflow to estimate and apply a recipe. To do it manually, prep and bake!\n\n# prepping a recipe calculates the necessary estimates\nalz_rec_prepped <- prep(alz_rec)\n\n# baking a recipe applies those to a data set\nbake(alz_rec_prepped, new_data = NULL)\n#> # A tibble: 298 × 134\n#>    ACE_CD143_Angiotensin_C… ACTH_Adrenocort…    AXL Adiponectin Alpha_1_Antichy…\n#>                       <dbl>            <dbl>  <dbl>       <dbl>            <dbl>\n#>  1                    1.25            0.552   1.77      -0.227            1.03  \n#>  2                    0.656          -0.261   0.833      0.137           -0.215 \n#>  3                    1.98            2.08   -0.273      0.639            2.07  \n#>  4                   -0.690          -1.31    0.489     -1.36            -1.42  \n#>  5                   -1.13           -1.07   -1.44       0.489            0.447 \n#>  6                   -0.397          -1.56   -0.273      0.0605          -1.67  \n#>  7                    0.363          -0.645  -0.273     -0.848            0.0698\n#>  8                    0.438          -0.0837  0.489     -1.29            -1.31  \n#>  9                   -1.50           -1.31   -1.08      -1.58            -0.369 \n#> 10                   -0.794          -0.854  -2.15       0.112            2.17  \n#> # … with 288 more rows, and 129 more variables: Alpha_1_Antitrypsin <dbl>,\n#> #   Alpha_1_Microglobulin <dbl>, Alpha_2_Macroglobulin <dbl>,\n#> #   Angiopoietin_2_ANG_2 <dbl>, Angiotensinogen <dbl>,\n#> #   Apolipoprotein_A_IV <dbl>, Apolipoprotein_A1 <dbl>,\n#> #   Apolipoprotein_A2 <dbl>, Apolipoprotein_B <dbl>, Apolipoprotein_CI <dbl>,\n#> #   Apolipoprotein_CIII <dbl>, Apolipoprotein_D <dbl>, Apolipoprotein_E <dbl>,\n#> #   Apolipoprotein_H <dbl>, B_Lymphocyte_Chemoattractant_BL <dbl>, …"
+  },
+  {
+    "objectID": "slides/3-workflow.html#bundle-components-in-a-workflow",
+    "href": "slides/3-workflow.html#bundle-components-in-a-workflow",
+    "title": "Building better workflows",
+    "section": "Bundle components in a workflow()",
+    "text": "Bundle components in a workflow()\n\nalz_wflow <- workflow() %>% \n  add_model(lr_pen_spec) %>% \n  add_recipe(alz_rec)\n\n\n\ncan use other preprocessors: add_formula(), add_variables()\nuse a workflow like you’ve use the model before"
+  },
+  {
+    "objectID": "slides/2-model.html#evaluating-model-performance-1",
+    "href": "slides/2-model.html#evaluating-model-performance-1",
+    "title": "Building models",
+    "section": "Evaluating model performance",
+    "text": "Evaluating model performance\n\nlr_spec %>% \n  fit_resamples(\n    Class ~ tau + VEGF, \n    resamples = alz_folds\n  ) %>% \n  collect_metrics()\n#> # A tibble: 2 × 6\n#>   .metric  .estimator  mean     n std_err .config             \n#>   <chr>    <chr>      <dbl> <int>   <dbl> <chr>               \n#> 1 accuracy binary     0.856     5  0.0186 Preprocessor1_Model1\n#> 2 roc_auc  binary     0.890     5  0.0178 Preprocessor1_Model1"
+  },
+  {
+    "objectID": "slides/2-model.html#how-did-we-do",
+    "href": "slides/2-model.html#how-did-we-do",
+    "title": "Building models",
+    "section": "How did we do?",
+    "text": "How did we do?\n\ndecision_tree() %>% \n  set_engine(\"rpart\") %>% \n  set_mode(\"classification\") %>% \n  fit_resamples(\n    Class ~ tau + VEGF, \n    resamples = alz_folds\n  ) %>% \n  collect_metrics()\n#> # A tibble: 2 × 6\n#>   .metric  .estimator  mean     n std_err .config             \n#>   <chr>    <chr>      <dbl> <int>   <dbl> <chr>               \n#> 1 accuracy binary     0.832     5  0.0229 Preprocessor1_Model1\n#> 2 roc_auc  binary     0.850     5  0.0325 Preprocessor1_Model1"
+  },
+  {
+    "objectID": "slides/4-tuning.html#tuning-parameters",
+    "href": "slides/4-tuning.html#tuning-parameters",
+    "title": "Tuning models",
+    "section": "Tuning parameters",
+    "text": "Tuning parameters\nThese are model or preprocessing parameters that are important but cannot be estimated directly from the data.\n\nSome examples:\n\n\n\nTree depth in decision trees.\nNumber of neighbors in a K-nearest neighbor model.\nActivation function (e.g. sigmoidal, ReLu) in neural networks.\nNumber of PCA components to retain.\n\n\n\nCovariance/correlation matrix structure in mixed models.\nData distribution in survival models.\nSpline degrees of freedom."
+  },
+  {
+    "objectID": "slides/4-tuning.html#optimizing-tuning-parameters",
+    "href": "slides/4-tuning.html#optimizing-tuning-parameters",
+    "title": "Tuning models",
+    "section": "Optimizing tuning parameters",
+    "text": "Optimizing tuning parameters\nThe main approach is to try different values and measure their performance.\nThe main two classes of optimization models are:\n\nGrid search where a pre-defined set of candidate values are tested.\nIterative search methods suggest/estimate new values of candidate parameters to evaluate."
+  },
+  {
+    "objectID": "slides/4-tuning.html#choosing-tuning-parameters",
+    "href": "slides/4-tuning.html#choosing-tuning-parameters",
+    "title": "Tuning models",
+    "section": "Choosing tuning parameters    ",
+    "text": "Choosing tuning parameters    \nLet’s take our previous recipe and add a few changes:\n\nlr_pen_spec <- logistic_reg(penalty = tune(), mixture = tune()) %>% \n  set_engine(\"glmnet\") %>% \n  set_mode(\"classification\")\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = tune(\"genotype_threshold\")) %>% \n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) %>% \n  step_zv(all_predictors()) %>% \n  step_normalize(all_numeric())\nalz_wflow <-\n  workflow() %>%\n  add_model(lr_pen_spec) %>%\n  add_recipe(alz_rec)"
+  },
+  {
+    "objectID": "slides/4-tuning.html#grid-search-1",
+    "href": "slides/4-tuning.html#grid-search-1",
+    "title": "Tuning models",
+    "section": "Grid search ",
+    "text": "Grid search \n\nset.seed(9)\nlr_pen_res <-\n  alz_wflow %>%\n  tune_grid(resamples = alz_folds, grid = grid)\n\nlr_pen_res\n#> # Tuning results\n#> # 10-fold cross-validation using stratification \n#> # A tibble: 10 × 4\n#>    splits           id     .metrics          .notes          \n#>    <list>           <chr>  <list>            <list>          \n#>  1 <split [267/31]> Fold01 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  2 <split [268/30]> Fold02 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  3 <split [268/30]> Fold03 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  4 <split [268/30]> Fold04 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  5 <split [268/30]> Fold05 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  6 <split [268/30]> Fold06 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  7 <split [268/30]> Fold07 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  8 <split [269/29]> Fold08 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  9 <split [269/29]> Fold09 <tibble [50 × 7]> <tibble [0 × 3]>\n#> 10 <split [269/29]> Fold10 <tibble [50 × 7]> <tibble [0 × 3]>\n\n\ntune_grid() is pretty representative of their syntax (and is similar to fit_resamples())\ngrid can also be an integer for an automatic grid\nto keep predictions: ctrl <- control_grid(save_pred = TRUE)"
+  },
+  {
+    "objectID": "slides/4-tuning.html#grid-search",
+    "href": "slides/4-tuning.html#grid-search",
+    "title": "Tuning models",
+    "section": "Grid search",
+    "text": "Grid search\nThis is the most basic (but very effective) way for tuning models.\ntidymodels has pre-defined information on tuning parameters, such as their type, range, transformations, etc.\nA grid can be created manually or automatically."
+  },
+  {
+    "objectID": "slides/4-tuning.html#manual-grid---get-parameters",
+    "href": "slides/4-tuning.html#manual-grid---get-parameters",
+    "title": "Tuning models",
+    "section": "Manual grid - get parameters  ",
+    "text": "Manual grid - get parameters  \n\nalz_wflow %>% \n  extract_parameter_set_dials()\n#> Collection of 3 parameters for tuning\n#> \n#>          identifier      type    object\n#>             penalty   penalty nparam[+]\n#>             mixture   mixture nparam[+]\n#>  genotype_threshold threshold nparam[+]"
+  },
+  {
+    "objectID": "slides/4-tuning.html#manual-grid---get-parameters-1",
+    "href": "slides/4-tuning.html#manual-grid---get-parameters-1",
+    "title": "Tuning models",
+    "section": "Manual grid - get parameters  ",
+    "text": "Manual grid - get parameters  \n\n\n\nalz_wfl %>% \n  extract_parameter_set_dials()\n\nThis type of object can be updated (e.g. to change the ranges, etc)\n\n\n#> Collection of 3 parameters for tuning\n#> \n#>  identifier     type    object\n#>     penalty  penalty nparam[+]\n#>     mixture  mixture nparam[+]\n#>    num_comp num_comp nparam[+]"
+  },
+  {
+    "objectID": "slides/4-tuning.html#manual-grid---create-grid",
+    "href": "slides/4-tuning.html#manual-grid---create-grid",
+    "title": "Tuning models",
+    "section": "Manual grid - create grid  ",
+    "text": "Manual grid - create grid  \nThis is a type of space-filling design.\nIt tends to do much better than random grids and is (usually) more efficient than regular grids.\n\nset.seed(2)\ngrid <- \n  alz_wflow %>% \n  extract_parameter_set_dials() %>% \n  grid_latin_hypercube(size = 25)\n\ngrid\n#> # A tibble: 25 × 3\n#>          penalty mixture genotype_threshold\n#>            <dbl>   <dbl>              <dbl>\n#>  1 0.124           0.309            0.00472\n#>  2 0.0000000474    0.269            0.0272 \n#>  3 0.0000000101    0.810            0.0205 \n#>  4 0.0000140       0.527            0.0695 \n#>  5 0.172           0.897            0.0160 \n#>  6 0.0000329       0.701            0.0128 \n#>  7 0.00000000610   0.590            0.0831 \n#>  8 0.0141          0.102            0.0368 \n#>  9 0.00513         0.405            0.0863 \n#> 10 0.000667        0.145            0.00113\n#> # … with 15 more rows\n\n\n\nmore space-filling: grid_max_entropy()\nother: grid_regular(), grid_random()"
+  },
+  {
+    "objectID": "slides/4-tuning.html#the-results",
+    "href": "slides/4-tuning.html#the-results",
+    "title": "Tuning models",
+    "section": "The results  ",
+    "text": "The results  \n\n\nset.seed(2)\ngrid <- \n  alz_wflow %>% \n  extract_parameter_set_dials() %>% \n  grid_latin_hypercube(size = 25)\n\ngrid %>% \n  ggplot(aes(penalty, mixture)) +\n  geom_point(cex = 4) +\n  scale_x_log10()\n\n\n\n\n\n\n\nNote that penalty was generated in log-10 units."
+  },
+  {
+    "objectID": "slides/4-tuning.html#grid-results",
+    "href": "slides/4-tuning.html#grid-results",
+    "title": "Tuning models",
+    "section": "Grid results ",
+    "text": "Grid results \n\nautoplot(lr_pen_res)"
+  },
+  {
+    "objectID": "slides/4-tuning.html#returning-results",
+    "href": "slides/4-tuning.html#returning-results",
+    "title": "Tuning models",
+    "section": "Returning results ",
+    "text": "Returning results \n\ncollect_metrics(lr_pen_res)\n#> # A tibble: 50 × 9\n#>         penalty mixture genotype_thresho… .metric .estimator  mean     n std_err\n#>           <dbl>   <dbl>             <dbl> <chr>   <chr>      <dbl> <int>   <dbl>\n#>  1 0.124          0.309           0.00472 accura… binary     0.856    10 0.0109 \n#>  2 0.124          0.309           0.00472 roc_auc binary     0.903    10 0.0207 \n#>  3 0.0000000474   0.269           0.0272  accura… binary     0.872    10 0.0141 \n#>  4 0.0000000474   0.269           0.0272  roc_auc binary     0.902    10 0.0189 \n#>  5 0.0000000101   0.810           0.0205  accura… binary     0.883    10 0.0114 \n#>  6 0.0000000101   0.810           0.0205  roc_auc binary     0.905    10 0.0177 \n#>  7 0.0000140      0.527           0.0695  accura… binary     0.872    10 0.0122 \n#>  8 0.0000140      0.527           0.0695  roc_auc binary     0.900    10 0.0188 \n#>  9 0.172          0.897           0.0160  accura… binary     0.728    10 0.00247\n#> 10 0.172          0.897           0.0160  roc_auc binary     0.832    10 0.0207 \n#> # … with 40 more rows, and 1 more variable: .config <chr>"
+  },
+  {
+    "objectID": "slides/4-tuning.html#picking-a-parameter-combination",
+    "href": "slides/4-tuning.html#picking-a-parameter-combination",
+    "title": "Tuning models",
+    "section": "Picking a parameter combination ",
+    "text": "Picking a parameter combination \n\nshow_best(lr_pen_res, metric = \"roc_auc\")\n#> # A tibble: 5 × 9\n#>    penalty mixture genotype_threshold .metric .estimator  mean     n std_err\n#>      <dbl>   <dbl>              <dbl> <chr>   <chr>      <dbl> <int>   <dbl>\n#> 1 3.11e- 3   0.869             0.0969 roc_auc binary     0.912    10  0.0185\n#> 2 2.41e- 4   0.949             0.0460 roc_auc binary     0.909    10  0.0168\n#> 3 5.13e- 3   0.405             0.0863 roc_auc binary     0.909    10  0.0193\n#> 4 5.69e- 4   0.370             0.0426 roc_auc binary     0.906    10  0.0166\n#> 5 5.41e-10   0.633             0.0357 roc_auc binary     0.906    10  0.0171\n#> # … with 1 more variable: .config <chr>\n\nselect_best(lr_pen_res, metric = \"roc_auc\")\n#> # A tibble: 1 × 4\n#>   penalty mixture genotype_threshold .config              \n#>     <dbl>   <dbl>              <dbl> <chr>                \n#> 1 0.00311   0.869             0.0969 Preprocessor14_Model1\n\n\nYou can create a tibble of your own or use one of the tune::select_*() functions:"
+  },
+  {
+    "objectID": "slides/4-tuning.html#your-turn",
+    "href": "slides/4-tuning.html#your-turn",
+    "title": "Tuning models",
+    "section": "Your turn",
+    "text": "Your turn\n\n\nTune the nearest neighbor model.\n\n\n\n10:00"
+  },
+  {
+    "objectID": "slides/4-tuning.html#returning-results-1",
+    "href": "slides/4-tuning.html#returning-results-1",
+    "title": "Tuning models",
+    "section": "Returning results ",
+    "text": "Returning results \n\ncollect_metrics(lr_pen_res, summarize = FALSE)\n#> # A tibble: 500 × 8\n#>    id     penalty mixture genotype_thresho… .metric .estimator .estimate .config\n#>    <chr>    <dbl>   <dbl>             <dbl> <chr>   <chr>          <dbl> <chr>  \n#>  1 Fold01   0.124   0.309           0.00472 accura… binary         0.839 Prepro…\n#>  2 Fold01   0.124   0.309           0.00472 roc_auc binary         0.934 Prepro…\n#>  3 Fold02   0.124   0.309           0.00472 accura… binary         0.833 Prepro…\n#>  4 Fold02   0.124   0.309           0.00472 roc_auc binary         0.938 Prepro…\n#>  5 Fold03   0.124   0.309           0.00472 accura… binary         0.9   Prepro…\n#>  6 Fold03   0.124   0.309           0.00472 roc_auc binary         0.989 Prepro…\n#>  7 Fold04   0.124   0.309           0.00472 accura… binary         0.8   Prepro…\n#>  8 Fold04   0.124   0.309           0.00472 roc_auc binary         0.875 Prepro…\n#>  9 Fold05   0.124   0.309           0.00472 accura… binary         0.867 Prepro…\n#> 10 Fold05   0.124   0.309           0.00472 roc_auc binary         0.795 Prepro…\n#> # … with 490 more rows"
+  },
+  {
+    "objectID": "slides/4-tuning.html#deploy-your-model",
+    "href": "slides/4-tuning.html#deploy-your-model",
+    "title": "Tuning models",
+    "section": "Deploy your model ",
+    "text": "Deploy your model \nHow do you use your new tree_fit model in production?\n\nlibrary(vetiver)\nv <- vetiver_model(alz_final_fit, \"alzheimers\")\nv\n#> \n#> ── alzheimers ─ <butchered_workflow> model for deployment \n#> A glmnet classification modeling workflow using 130 features\n\nLearn more at https://vetiver.rstudio.com"
+  },
+  {
+    "objectID": "slides/4-tuning.html#deploy-your-model-1",
+    "href": "slides/4-tuning.html#deploy-your-model-1",
+    "title": "Tuning models",
+    "section": "Deploy your model ",
+    "text": "Deploy your model \nHow do you use your new model alz_final_fit in production?\n\nlibrary(plumber)\npr() %>%\n  vetiver_api(v)\n#> # Plumber router with 2 endpoints, 4 filters, and 1 sub-router.\n#> # Use `pr_run()` on this object to start the API.\n#> ├──[queryString]\n#> ├──[body]\n#> ├──[cookieParser]\n#> ├──[sharedSecret]\n#> ├──/logo\n#> │  │ # Plumber static router serving from directory: /Users/hannah/Library/R/arm64/4.2/library/vetiver\n#> ├──/ping (GET)\n#> └──/predict (POST)\n\nLearn more at https://vetiver.rstudio.com"
+  },
+  {
+    "objectID": "slides/4-tuning.html#your-turn-1",
+    "href": "slides/4-tuning.html#your-turn-1",
+    "title": "Tuning models",
+    "section": "Your turn",
+    "text": "Your turn\n\n\nRun the vetiver chunk in your .qmd.\nCheck out the automated visual documentation.\n\n\n\n05:00"
+  },
+  {
+    "objectID": "slides/4-tuning.html#compare-to-glm",
+    "href": "slides/4-tuning.html#compare-to-glm",
+    "title": "Tuning models",
+    "section": "Compare to GLM",
+    "text": "Compare to GLM"
+  },
+  {
+    "objectID": "slides/4-tuning.html#updating-the-workflow-and-final-fit",
+    "href": "slides/4-tuning.html#updating-the-workflow-and-final-fit",
+    "title": "Tuning models",
+    "section": "Updating the workflow and final fit  ",
+    "text": "Updating the workflow and final fit  \n\nbest_auc <- select_best(lr_pen_res, metric = \"roc_auc\")\nbest_auc\n#> # A tibble: 1 × 4\n#>      penalty mixture num_comp .config             \n#>        <dbl>   <dbl>    <int> <chr>               \n#> 1 0.00000281   0.223        3 Preprocessor3_Model2\n\nalz_wfl <-\n  alz_wfl %>% \n  finalize_workflow(best_auc)\n\ntest_res <- \n  alz_wfl %>% \n  last_fit(split = alz_split)\ntest_res\n#> # Resampling results\n#> # Manual resampling \n#> # A tibble: 1 × 6\n#>   splits           id               .metrics .notes   .predictions .workflow \n#>   <list>           <chr>            <list>   <list>   <list>       <list>    \n#> 1 <split [298/35]> train/test split <tibble> <tibble> <tibble>     <workflow>"
+  },
+  {
+    "objectID": "slides/4-tuning.html#compare-test-set-and-resampling-results",
+    "href": "slides/4-tuning.html#compare-test-set-and-resampling-results",
+    "title": "Tuning models",
+    "section": "Compare test set and resampling results ",
+    "text": "Compare test set and resampling results \n\ncollect_metrics(test_res)\n#> # A tibble: 2 × 4\n#>   .metric  .estimator .estimate .config             \n#>   <chr>    <chr>          <dbl> <chr>               \n#> 1 accuracy binary         0.886 Preprocessor1_Model1\n#> 2 roc_auc  binary         0.824 Preprocessor1_Model1\n\n# resampling results\nshow_best(lr_pen_res, metric = \"roc_auc\", n = 1)\n#> # A tibble: 1 × 9\n#>   penalty mixture genotype_threshold .metric .estimator  mean     n std_err\n#>     <dbl>   <dbl>              <dbl> <chr>   <chr>      <dbl> <int>   <dbl>\n#> 1 0.00311   0.869             0.0969 roc_auc binary     0.912    10  0.0185\n#> # … with 1 more variable: .config <chr>"
+  },
+  {
+    "objectID": "slides/4-tuning.html#final-fitted-workflow",
+    "href": "slides/4-tuning.html#final-fitted-workflow",
+    "title": "Tuning models",
+    "section": "Final fitted workflow",
+    "text": "Final fitted workflow\nWe can extract the final workflow, fit on the training set:\n\nalz_final_fit <- test_res %>% \n  extract_workflow()\n\n# use to predict\npredict(alz_final_fit, alz_train[1:3,])\n#> # A tibble: 3 × 1\n#>   .pred_class\n#>   <fct>      \n#> 1 Control    \n#> 2 Control    \n#> 3 Control"
+  },
+  {
+    "objectID": "slides/4-tuning.html#updating-the-workflow",
+    "href": "slides/4-tuning.html#updating-the-workflow",
+    "title": "Tuning models",
+    "section": "Updating the workflow",
+    "text": "Updating the workflow\n\nbest_auc <- select_best(lr_pen_res, metric = \"roc_auc\")\nbest_auc\n#> # A tibble: 1 × 4\n#>      penalty mixture num_comp .config             \n#>        <dbl>   <dbl>    <int> <chr>               \n#> 1 0.00000281   0.223        3 Preprocessor3_Model2\n\nalz_wfl <- alz_wfl %>% \n  finalize_workflow(best_auc)"
+  },
+  {
+    "objectID": "slides/4-tuning.html#the-final-fit",
+    "href": "slides/4-tuning.html#the-final-fit",
+    "title": "Tuning models",
+    "section": "The final fit  ",
+    "text": "The final fit  \n\ntest_res <- alz_wflow %>% \n  last_fit(split = alz_split)\ntest_res\n#> # Resampling results\n#> # Manual resampling \n#> # A tibble: 1 × 6\n#>   splits           id               .metrics .notes   .predictions .workflow \n#>   <list>           <chr>            <list>   <list>   <list>       <list>    \n#> 1 <split [298/35]> train/test split <tibble> <tibble> <tibble>     <workflow>"
+  },
+  {
+    "objectID": "index.html#acknowledgements",
+    "href": "index.html#acknowledgements",
+    "title": "tidymodels workshop",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\nThese materials have been created by the tidymodels team along with Alison Hill."
+  },
+  {
+    "objectID": "slides/3-workflow.html#a-first-recipe",
+    "href": "slides/3-workflow.html#a-first-recipe",
+    "title": "Building better workflows",
+    "section": "A first recipe",
+    "text": "A first recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train)\n\nBased on the formula, the function assigns columns to roles of “outcome” or “predictor”\n\nsummary(alz_rec)\n#> # A tibble: 131 × 4\n#>    variable                        type    role      source  \n#>    <chr>                           <chr>   <chr>     <chr>   \n#>  1 ACE_CD143_Angiotensin_Converti  numeric predictor original\n#>  2 ACTH_Adrenocorticotropic_Hormon numeric predictor original\n#>  3 AXL                             numeric predictor original\n#>  4 Adiponectin                     numeric predictor original\n#>  5 Alpha_1_Antichymotrypsin        numeric predictor original\n#>  6 Alpha_1_Antitrypsin             numeric predictor original\n#>  7 Alpha_1_Microglobulin           numeric predictor original\n#>  8 Alpha_2_Macroglobulin           numeric predictor original\n#>  9 Angiopoietin_2_ANG_2            numeric predictor original\n#> 10 Angiotensinogen                 numeric predictor original\n#> # … with 121 more rows"
+  },
+  {
+    "objectID": "slides/3-workflow.html#a-basic-recipe",
+    "href": "slides/3-workflow.html#a-basic-recipe",
+    "title": "Building better workflows",
+    "section": "A basic recipe",
+    "text": "A basic recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03)"
+  },
+  {
+    "objectID": "slides/3-workflow.html#a-basic-recipe-1",
+    "href": "slides/3-workflow.html#a-basic-recipe-1",
+    "title": "Building better workflows",
+    "section": "A basic recipe",
+    "text": "A basic recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_dummy(all_nominal_predictors()) \n\n\n\napplied to all nominal predictors!\nrecipes selectors: by type or by role or both!"
+  },
+  {
+    "objectID": "slides/3-workflow.html#a-basic-recipe-2",
+    "href": "slides/3-workflow.html#a-basic-recipe-2",
+    "title": "Building better workflows",
+    "section": "A basic recipe",
+    "text": "A basic recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) \n\n\n\nAdds a catch-all level to a factor for any new values not encountered in model training, to avoid hiccups with new, unknown factor levels\nbefore step_dummy()"
+  },
+  {
+    "objectID": "slides/3-workflow.html#a-basic-recipe-3",
+    "href": "slides/3-workflow.html#a-basic-recipe-3",
+    "title": "Building better workflows",
+    "section": "A basic recipe",
+    "text": "A basic recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) %>% \n  step_zv(all_predictors())"
+  },
+  {
+    "objectID": "slides/3-workflow.html#a-basic-recipe-4",
+    "href": "slides/3-workflow.html#a-basic-recipe-4",
+    "title": "Building better workflows",
+    "section": "A basic recipe",
+    "text": "A basic recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) %>% \n  step_zv(all_predictors()) %>% \n  step_normalize(all_numeric())\n\n\n\nlearn the mean and sd of each numeric column and save it to apply to any dataset to normalize\nwhich brings us the question: what’s the estimation part?"
+  },
+  {
+    "objectID": "slides/4-tuning.html#finalizing-the-workflow",
+    "href": "slides/4-tuning.html#finalizing-the-workflow",
+    "title": "Tuning models",
+    "section": "Finalizing the workflow",
+    "text": "Finalizing the workflow\n\nbest_auc <- select_best(lr_pen_res, metric = \"roc_auc\")\nbest_auc\n#> # A tibble: 1 × 4\n#>   penalty mixture genotype_threshold .config              \n#>     <dbl>   <dbl>              <dbl> <chr>                \n#> 1 0.00311   0.869             0.0969 Preprocessor14_Model1\n\nalz_wflow <- alz_wflow %>% \n  finalize_workflow(best_auc)"
+  },
+  {
+    "objectID": "slides/4-tuning.html#compare-to-knn",
+    "href": "slides/4-tuning.html#compare-to-knn",
+    "title": "Tuning models",
+    "section": "Compare to KNN",
+    "text": "Compare to KNN\n\nshow_best(lr_pen_res, metric = \"roc_auc\", n = 3)\n#> # A tibble: 3 × 9\n#>    penalty mixture genotype_threshold .metric .estimator  mean     n std_err\n#>      <dbl>   <dbl>              <dbl> <chr>   <chr>      <dbl> <int>   <dbl>\n#> 1 0.00311    0.869             0.0969 roc_auc binary     0.912    10  0.0185\n#> 2 0.000241   0.949             0.0460 roc_auc binary     0.909    10  0.0168\n#> 3 0.00513    0.405             0.0863 roc_auc binary     0.909    10  0.0193\n#> # … with 1 more variable: .config <chr>\n\nshow_best(knn_res, metric = \"roc_auc\", n = 3)\n#> # A tibble: 3 × 9\n#>   neighbors weight_func genotype_thresho… .metric .estimator  mean     n std_err\n#>       <int> <chr>                   <dbl> <chr>   <chr>      <dbl> <int>   <dbl>\n#> 1        15 rectangular            0.0205 roc_auc binary     0.837    10  0.0309\n#> 2        13 inv                    0.0300 roc_auc binary     0.835    10  0.0262\n#> 3        11 inv                    0.0120 roc_auc binary     0.831    10  0.0274\n#> # … with 1 more variable: .config <chr>"
+  },
+  {
+    "objectID": "slides/3-workflow.html#use-a-workflow-2",
+    "href": "slides/3-workflow.html#use-a-workflow-2",
+    "title": "Building better workflows",
+    "section": "Use a workflow",
+    "text": "Use a workflow\n\nalz_res %>% \n  collect_metrics()\n#> # A tibble: 2 × 6\n#>   .metric  .estimator  mean     n std_err .config             \n#>   <chr>    <chr>      <dbl> <int>   <dbl> <chr>               \n#> 1 accuracy binary     0.762    10  0.0106 Preprocessor1_Model1\n#> 2 roc_auc  binary     0.853    10  0.0153 Preprocessor1_Model1"
+  },
+  {
+    "objectID": "slides/3-workflow.html#tidying-a-recipe",
+    "href": "slides/3-workflow.html#tidying-a-recipe",
+    "title": "Building better workflows",
+    "section": "Tidying a recipe",
+    "text": "Tidying a recipe\n\ntidy(alz_rec)\n#> # A tibble: 5 × 6\n#>   number operation type      trained skip  id             \n#>    <int> <chr>     <chr>     <lgl>   <lgl> <chr>          \n#> 1      1 step      other     FALSE   FALSE other_50f3D    \n#> 2      2 step      novel     FALSE   FALSE novel_AVARj    \n#> 3      3 step      dummy     FALSE   FALSE dummy_jPsqy    \n#> 4      4 step      zv        FALSE   FALSE zv_qylAU       \n#> 5      5 step      normalize FALSE   FALSE normalize_u5u0m"
+  },
+  {
+    "objectID": "slides/3-workflow.html#tidying-a-recipe-1",
+    "href": "slides/3-workflow.html#tidying-a-recipe-1",
+    "title": "Building better workflows",
+    "section": "Tidying a recipe",
+    "text": "Tidying a recipe\n\ntidy(alz_rec_prepped, number = 5)\n#> # A tibble: 266 × 4\n#>    terms                           statistic    value id             \n#>    <chr>                           <chr>        <dbl> <chr>          \n#>  1 ACE_CD143_Angiotensin_Converti  mean         1.32  normalize_u5u0m\n#>  2 ACTH_Adrenocorticotropic_Hormon mean        -1.54  normalize_u5u0m\n#>  3 AXL                             mean         0.312 normalize_u5u0m\n#>  4 Adiponectin                     mean        -5.21  normalize_u5u0m\n#>  5 Alpha_1_Antichymotrypsin        mean         1.36  normalize_u5u0m\n#>  6 Alpha_1_Antitrypsin             mean       -13.1   normalize_u5u0m\n#>  7 Alpha_1_Microglobulin           mean        -2.93  normalize_u5u0m\n#>  8 Alpha_2_Macroglobulin           mean      -159.    normalize_u5u0m\n#>  9 Angiopoietin_2_ANG_2            mean         0.664 normalize_u5u0m\n#> 10 Angiotensinogen                 mean         2.31  normalize_u5u0m\n#> # … with 256 more rows\n\n\naccess the stats for a step (after estimation/prep)"
+  },
+  {
+    "objectID": "slides/2-model.html#prediction-types",
+    "href": "slides/2-model.html#prediction-types",
+    "title": "Building models",
+    "section": "Prediction types",
+    "text": "Prediction types\n\nlr_fit %>%\n  predict(new_data = alz_new, type = \"prob\")\n#> # A tibble: 3 × 2\n#>   .pred_Impaired .pred_Control\n#>            <dbl>         <dbl>\n#> 1         0.0505       0.949  \n#> 2         0.746        0.254  \n#> 3         0.994        0.00615\n\nlr_fit %>%\n  augment(new_data = alz_new)\n#> # A tibble: 3 × 6\n#>     tau  VEGF Class    .pred_class .pred_Impaired .pred_Control\n#>   <dbl> <dbl> <fct>    <fct>                <dbl>         <dbl>\n#> 1     5    15 Control  Control             0.0505       0.949  \n#> 2     6    15 Control  Impaired            0.746        0.254  \n#> 3     7    15 Impaired Impaired            0.994        0.00615"
+  }
+]

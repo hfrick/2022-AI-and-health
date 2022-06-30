@@ -1,0 +1,411 @@
+---
+title: "Building models"
+subtitle: "Intelligence artificielle et santé, Nantes 2022"
+author: "Hannah Frick"
+format: 
+  revealjs:
+    slide-number: true
+    theme: [default, tidymodels.scss]
+    width: 1600
+    height: 900
+knitr:
+  opts_chunk: 
+    echo: true
+    collapse: true
+    comment: "#>"
+---
+
+```{r}
+#| include: false
+#| file: setup.R
+```
+
+```{r previously}
+#| include: false
+
+library(tidymodels)
+tidymodels_prefer()
+
+data("ad_data", package = "modeldata")
+alz <- ad_data
+```
+
+
+## Data splitting and spending
+
+For machine learning, we typically split data into training and test sets:
+
+. . .
+
+-   The **training set** is used to estimate model parameters.
+-   The **test set** is used to find an independent assessment of model performance.
+
+. . .
+
+Do not 🚫 use the test set during training.
+
+##  {background-image="images/Hatching-process.jpg"}
+
+```{r}
+#| echo: false
+#| fig.width: 12
+#| fig.height: 3
+
+set.seed(123)
+library(forcats)
+one_split <- slice(alz, 1:30) %>% 
+  initial_split() %>% 
+  tidy() %>% 
+  add_row(Row = 1:30, Data = "Original") %>% 
+  mutate(Data = case_when(
+    Data == "Analysis" ~ "Training",
+    Data == "Assessment" ~ "Testing",
+    TRUE ~ Data
+  )) %>% 
+  mutate(Data = factor(Data, levels = c("Original", "Training", "Testing")))
+all_split <-
+  ggplot(one_split, aes(x = Row, y = fct_rev(Data), fill = Data)) + 
+  geom_tile(color = "white",
+            size = 1) + 
+  scale_fill_manual(values = splits_pal, guide = "none") +
+  theme_minimal() +
+  theme(axis.text.y = element_text(size = rel(2)),
+        axis.text.x = element_blank(),
+        legend.position = "top",
+        panel.grid = element_blank()) +
+  coord_equal(ratio = 1) +
+  labs(x = NULL, y = NULL)
+all_split
+```
+
+# The more data<br>we spend 🤑<br><br>the better estimates<br>we'll get.
+
+## Data splitting and spending
+
+-   Spending too much data in **training** prevents us from computing a good assessment of predictive **performance**.
+
+-   Spending too much data in **testing** prevents us from computing a good estimate of model **parameters**.
+
+# The testing data is precious 💎
+
+## Data splitting and spending `r hexes("rsample")`
+
+```{r}
+set.seed(123)
+alz_split <- initial_split(alz, strata = Class, prop = .9)
+alz_split
+```
+
+:::{.notes}
+- other split function: `initial_time_split()`
+- point out sizes
+:::
+
+## Data splitting and spending `r hexes("rsample")`
+
+```{r}
+alz_train <- training(alz_split) 
+alz_test <- testing(alz_split)
+
+c(nrow(alz_train), nrow(alz_test))
+```
+
+
+## Your turn {transition="slide-in"}
+
+<!-- ![](images/parsnip-flagger.jpg){.absolute top="0" right="0" width="150" height="150"} -->
+![](hexes/tidymodels.png){.absolute top="0" right="0" height="25%"}
+
+*How do you fit a linear model in R?*
+*How many different ways can you think of?*
+
+```{r}
+#| echo: false
+countdown(minutes = 3, id = "how-to-fit-linear-model")
+```
+
+. . .
+
+-   `lm` for linear model
+-   `glmnet` for regularized regression
+-   `keras` for regression using TensorFlow
+-   `stan` for Bayesian regression
+-   `spark` for large data sets
+
+## To specify a model `r hexes("parsnip")` 
+
+::: columns
+::: {.column width="40%"}
+
+-   Choose a [model]{.underline}
+-   Specify an engine
+-   Set the mode
+
+:::
+
+::: {.column width="60%"}
+
+```{r}
+#| code-line-numbers: "1"
+logistic_reg() %>% 
+  set_engine("glm") %>% 
+  set_mode("classification")
+```
+
+:::
+:::
+
+## To specify a model `r hexes("parsnip")` 
+
+::: columns
+::: {.column width="40%"}
+
+-   Choose a model
+-   Specify an [engine]{.underline}
+-   Set the mode
+
+:::
+
+::: {.column width="60%"}
+
+```{r}
+#| code-line-numbers: "2"
+logistic_reg() %>% 
+  set_engine("glm") %>% 
+  set_mode("classification")
+```
+
+:::
+:::
+
+## To specify a model `r hexes("parsnip")` 
+
+::: columns
+::: {.column width="40%"}
+
+-   Choose a model
+-   Specify an engine
+-   Set the [mode]{.underline}
+
+:::
+
+::: {.column width="60%"}
+
+```{r}
+#| code-line-numbers: "3"
+logistic_reg() %>% 
+  set_engine("glm") %>% 
+  set_mode("classification")
+```
+
+:::
+:::
+
+. . .
+
+All available models are listed at <https://www.tidymodels.org/find/parsnip/>
+
+:::{.notes}
+- many models
+- many engines
+- in parsnip and extension packages
+:::
+
+## To use a model
+
+Now we've specified a model - how do we use it?
+
+```{r}
+lr_spec <- 
+  logistic_reg() %>% 
+  set_engine("glm") %>% 
+  set_mode("classification")
+```
+
+## To use a model
+
+We can fit it to our data
+
+```{r}
+lr_fit <- 
+  lr_spec %>% 
+  fit(Class ~ tau + VEGF, 
+      data = alz)
+
+lr_fit
+```
+
+
+## To use a model
+
+We can predict new data with the fitted model
+
+```{r}
+alz_new <- 
+  tibble(tau = c(5, 6, 7), 
+         VEGF = c(15, 15, 15),
+         Class = c("Control", "Control", "Impaired")) %>% 
+  mutate(Class = factor(Class, levels = c("Impaired", "Control")))
+
+lr_fit %>% 
+  predict(new_data = alz_new)
+```
+
+## To use a model `r hexes("parsnip", "yardstick")`
+
+We can predict new data with the fitted model and assess performance
+
+```{r}
+alz_new <- 
+  tibble(tau = c(5, 6, 7), 
+         VEGF = c(15, 15, 15),
+         Class = c("Control", "Control", "Impaired")) %>% 
+  mutate(Class = factor(Class, levels = c("Impaired", "Control")))
+
+lr_fit %>% 
+  predict(new_data = alz_new) %>% 
+  bind_cols(alz_new) %>% 
+  accuracy(truth = Class, estimate = .pred_class)
+```
+
+:::{.notes}
+we can just do bind_cols() so easily because of the prediction format!
+:::
+
+
+## The tidymodels prediction guarantee! `r hexes("parsnip")`
+
+. . .
+
+-   The predictions will always be inside a **tibble**
+-   The column names and types are **unsurprising** and **predictable**
+-   The number of rows in `new_data` and the output **are the same**
+
+## Prediction types
+
+```{r}
+lr_fit %>%
+  predict(new_data = alz_new, type = "prob")
+
+lr_fit %>%
+  augment(new_data = alz_new)
+```
+
+
+## Your turn {transition="slide-in"}
+
+<!-- ![](images/parsnip-flagger.jpg){.absolute top="0" right="0" width="150" height="150"} -->
+![](hexes/tidymodels.png){.absolute top="0" right="0" height="25%"}
+
+*Split the Alzheimer's data and fit a decision tree.*
+
+*What is the performance on the test set?*
+
+```{r}
+#| eval: false
+alz_split <- initial_split(alz, strata = Class, prop = .9)
+alz_train <- training(alz_split)
+alz_test <- testing(alz_split)
+```
+
+```{r}
+#| echo: false
+countdown(minutes = 10, id = "how-to-fit-linear-model")
+```
+
+# Which model is better? `r emo::ji("thinking_face")`
+
+# We already used the test set! `r emo::ji("gem")`
+
+# Resampling `r emo::ji("recycle")`
+
+##  {background-color="white" background-image="images/resampling.svg" background-size="80%"}
+
+## Cross-validation
+
+![](images/three-CV.svg)
+
+## Cross-validation
+
+![](images/three-CV-iter.svg)
+
+## Resampling `r hexes("rsample")`
+
+What is in this?
+
+```{r}
+set.seed(100)
+alz_folds <- 
+    vfold_cv(alz_train, v = 5, strata = Class)
+alz_folds
+```
+
+:::{.notes}
+- other types of resampling: boostrap, validation split
+- default is `v = 10` but we don't have sooo much data
+:::
+
+## We need a new way to fit
+
+```{r}
+#| eval: false
+split1 <- alz_folds$splits[[1]]
+split1_analysis <- analysis(split1)
+split1_assessment <- assessment(split1)
+tree_mod %>% 
+  fit(Class ~ ., data = split1_analysis) %>% 
+  predict(split1_assessment) %>% 
+  bind_cols(split1_assessment) %>% 
+  accuracy(Class, .pred_class)
+# rinse and repeat
+split2 <- ...
+```
+
+## Evaluating model performance
+
+```{r}
+lr_spec %>% 
+  fit_resamples(
+    Class ~ tau + VEGF, 
+    resamples = alz_folds
+  )
+```
+
+## Evaluating model performance
+
+```{r}
+lr_spec %>% 
+  fit_resamples(
+    Class ~ tau + VEGF, 
+    resamples = alz_folds
+  ) %>% 
+  collect_metrics()
+```
+
+
+## Your turn {transition="slide-in"}
+
+<!-- ![](images/parsnip-flagger.jpg){.absolute top="0" right="0" width="150" height="150"} -->
+![](hexes/tidymodels.png){.absolute top="0" right="0" height="25%"}
+
+*What is the average performance of the decision tree?*
+
+*Use cross-validation.*
+
+```{r}
+#| echo: false
+countdown(minutes = 10, id = "decision-tree-resamling")
+```
+
+## How did we do?
+
+```{r}
+decision_tree() %>% 
+  set_engine("rpart") %>% 
+  set_mode("classification") %>% 
+  fit_resamples(
+    Class ~ tau + VEGF, 
+    resamples = alz_folds
+  ) %>% 
+  collect_metrics()
+```

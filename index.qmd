@@ -1,0 +1,38 @@
+---
+title: "tidymodels workshop"
+---
+
+## Welcome
+
+This workshop provides an introduction to machine learning with R using the tidymodels framework, a collection of packages for modeling and machine learning using tidyverse principles. We will build, evaluate, compare, and tune predictive models. Along the way, we'll learn about key concepts in machine learning including overfitting, resampling, and feature engineering. Learners will gain knowledge about good predictive modeling practices, as well as hands-on experience using tidymodels packages like parsnip, rsample, recipes, yardstick, tune, and workflows.
+
+## Installation 
+
+Please join the workshop with a computer that has the following installed (all available for free):
+
+- A recent version of R, available at <https://cran.r-project.org/>
+- A recent version of RStudio Desktop (RStudio Desktop Open Source License, at least v2022.02), available at <https://www.rstudio.com/download>
+- The following R packages, which you can install from the R console:
+
+```{r, eval = FALSE}
+install.packages(c("tidyverse", "tidymodels", "modeldata", "kknn",  
+                   "ranger",  "rpart", "rpart.plot", 
+                   "partykit", "vetiver", "xgboost"))
+```
+
+
+## Slides
+
+- [1: Introduction](slides/1-introduction.html)
+- [2: A minimal model](slides/2-model.html)
+- [3: A better workflow](slides/3-workflow.html)
+- [4: A tuned workflow](slides/4-tuning.html)
+
+## Links
+
+- tidymodels main website <https://www.tidymodels.org/>
+- "Tidy Modeling with R" book: <https://www.tmwr.org/>
+
+## Acknowledgements
+
+These materials have been created by the tidymodels team along with Alison Hill.

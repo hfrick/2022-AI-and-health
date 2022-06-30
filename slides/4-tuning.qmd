@@ -1,0 +1,319 @@
+---
+title: "Tuning models"
+subtitle: "Intelligence artificielle et santé, Nantes 2022"
+author: "Hannah Frick"
+format: 
+  revealjs:
+    slide-number: true
+    theme: [default, tidymodels.scss]
+    width: 1600
+    height: 900
+knitr:
+  opts_chunk: 
+    echo: true
+    collapse: true
+    comment: "#>"
+---
+
+```{r}
+#| include: false
+#| file: setup.R
+```
+
+```{r previously}
+#| include: false
+library(tidymodels)
+
+data("ad_data", package = "modeldata")
+alz <- ad_data
+
+set.seed(123)
+alz_split <- initial_split(alz, strata = Class, prop = .9)
+alz_train <- training(alz_split) 
+alz_test <- testing(alz_split)
+
+set.seed(100)
+alz_folds <- 
+    vfold_cv(alz_train, v = 10, strata = Class)
+```
+
+## Tuning parameters
+
+These are model or preprocessing parameters that are important but cannot be estimated directly from the data. 
+
+. . .
+
+Some examples:
+
+::: columns
+::: {.column width="50%"}
+* Tree depth in decision trees.
+* Number of neighbors in a K-nearest neighbor model. 
+* Activation function (e.g. sigmoidal, ReLu) in neural networks. 
+* Number of PCA components to retain.
+:::
+
+::: {.column width="50%"}
+* Covariance/correlation matrix structure in mixed models.
+* Data distribution in survival models.
+* Spline degrees of freedom. 
+:::
+:::
+
+
+## Optimizing tuning parameters
+
+The main approach is to try different values and measure their performance. 
+
+The main two classes of optimization models are: 
+
+ * _Grid search_ where a pre-defined set of candidate values are tested. 
+ 
+ * _Iterative search_ methods suggest/estimate new values of candidate parameters to evaluate. 
+
+
+## Choosing tuning parameters `r I(hexes(c("recipes", "workflows", "parsnip", "tune")))`
+
+Let's take our previous recipe and add a few changes:
+
+```{r}
+#| code-line-numbers: "|1,6"
+lr_pen_spec <- logistic_reg(penalty = tune(), mixture = tune()) %>% 
+  set_engine("glmnet") %>% 
+  set_mode("classification")
+alz_rec <- 
+  recipe(Class ~ ., data = alz_train) %>% 
+  step_other(Genotype, threshold = tune("genotype_threshold")) %>% 
+  step_novel(all_nominal_predictors()) %>% 
+  step_dummy(all_nominal_predictors()) %>% 
+  step_zv(all_predictors()) %>% 
+  step_normalize(all_numeric())
+alz_wflow <-
+  workflow() %>%
+  add_model(lr_pen_spec) %>%
+  add_recipe(alz_rec)
+```
+
+## Grid search
+
+This is the most basic (but very effective) way for tuning models. 
+
+tidymodels has pre-defined information on tuning parameters, such as their type, range, transformations, etc. 
+
+A grid can be created manually or automatically. 
+
+
+## Manual grid - get parameters `r I(hexes(c("dials", "workflows")))`
+
+```{r}
+alz_wflow %>% 
+  extract_parameter_set_dials()
+```
+
+
+## Manual grid - create grid `r I(hexes(c("dials", "workflows")))`
+
+This is a type of _space-filling design_. 
+
+It tends to do much better than random grids and is (usually) more efficient than regular grids. 
+
+```{r get-grid}
+set.seed(2)
+grid <- 
+  alz_wflow %>% 
+  extract_parameter_set_dials() %>% 
+  grid_latin_hypercube(size = 25)
+
+grid
+```
+
+:::{.notes}
+- more space-filling: `grid_max_entropy()`
+- other: `grid_regular()`, `grid_random()`
+:::
+
+
+## The results `r I(hexes(c("dials", "workflows")))`
+
+```{r show-grid}
+#| output-location: column
+#| fig-width: 5
+#| fig-height: 5
+set.seed(2)
+grid <- 
+  alz_wflow %>% 
+  extract_parameter_set_dials() %>% 
+  grid_latin_hypercube(size = 25)
+
+grid %>% 
+  ggplot(aes(penalty, mixture)) +
+  geom_point(cex = 4) +
+  scale_x_log10()
+```
+:::{.notes}
+Note that `penalty` was generated in log-10 units. 
+:::
+
+## Grid search `r I(hexes(c("tune")))`
+
+```{r tuning}
+#| cache: true
+set.seed(9)
+lr_pen_res <-
+  alz_wflow %>%
+  tune_grid(resamples = alz_folds, grid = grid)
+
+lr_pen_res
+```
+
+:::{.notes}
+`tune_grid()` is pretty representative of their syntax (and is similar to `fit_resamples()`)
+
+grid can also be an integer for an automatic grid
+
+to keep predictions: `ctrl <- control_grid(save_pred = TRUE)`
+:::
+
+## Grid results `r I(hexes(c("tune")))`
+
+```{r autoplot, out.width = '90%', fig.align='center', dev = 'svg', dev.args = list(bg = "transparent"), fig.width=10, fig.height=5}
+autoplot(lr_pen_res)
+```
+
+
+## Returning results `r I(hexes(c("tune")))`
+
+```{r}
+collect_metrics(lr_pen_res)
+```
+
+## Returning results `r I(hexes(c("tune")))`
+
+```{r}
+collect_metrics(lr_pen_res, summarize = FALSE)
+```
+
+## Picking a parameter combination `r I(hexes(c("tune")))`
+
+```{r}
+show_best(lr_pen_res, metric = "roc_auc")
+
+select_best(lr_pen_res, metric = "roc_auc")
+```
+
+:::{.notes}
+You can create a tibble of your own or use one of the `tune::select_*()` functions: 
+:::
+
+
+## Your turn {transition="slide-in"}
+
+<!-- ![](images/parsnip-flagger.jpg){.absolute top="0" right="0" width="150" height="150"} -->
+![](hexes/tidymodels.png){.absolute top="0" right="0" height="25%"}
+
+*Tune the nearest neighbor model.*
+
+```{r}
+#| echo: false
+countdown(minutes = 10)
+```
+
+---
+
+```{r}
+#| cache: true
+
+knn_spec <-
+  nearest_neighbor(neighbors = tune(), weight_func = tune()) %>%
+  set_engine("kknn") %>%
+  set_mode("classification")
+
+alz_knn_wflow <- workflow() %>%
+  add_model(knn_spec) %>%
+  add_recipe(alz_rec)
+
+set.seed(9)
+knn_res <-
+  alz_knn_wflow %>%
+  tune_grid(resamples = alz_folds, grid = 25)
+```
+
+
+## Compare to KNN
+
+```{r}
+show_best(lr_pen_res, metric = "roc_auc", n = 3)
+
+show_best(knn_res, metric = "roc_auc", n = 3)
+```
+
+## Finalizing the workflow
+
+```{r}
+best_auc <- select_best(lr_pen_res, metric = "roc_auc")
+best_auc
+
+alz_wflow <- alz_wflow %>% 
+  finalize_workflow(best_auc)
+```
+
+## The final fit `r I(hexes(c("workflows", "tune")))`
+
+```{r}
+test_res <- alz_wflow %>% 
+  last_fit(split = alz_split)
+test_res
+```
+
+## Compare test set and resampling results `r I(hexes(c("tune")))`
+
+```{r}
+collect_metrics(test_res)
+
+# resampling results
+show_best(lr_pen_res, metric = "roc_auc", n = 1)
+```
+
+## Final fitted workflow
+
+We can extract the final workflow, fit on the training set:
+
+```{r}
+alz_final_fit <- test_res %>% 
+  extract_workflow()
+
+# use to predict
+predict(alz_final_fit, alz_train[1:3,])
+```
+
+
+## Deploy your model `r hexes("vetiver")`
+
+How do you use your new `tree_fit` model in **production**?
+
+```{r}
+library(vetiver)
+v <- vetiver_model(alz_final_fit, "alzheimers")
+v
+```
+
+Learn more at <https://vetiver.rstudio.com>
+
+## Deploy your model `r hexes("vetiver")`
+
+How do you use your new model `alz_final_fit` in **production**?
+
+```{r}
+library(plumber)
+pr() %>%
+  vetiver_api(v)
+```
+
+Learn more at <https://vetiver.rstudio.com>
+
+## Helpful resources
+
+* Overview of tidymodels with articles covering different use cases: <https://tidymodels.org>
+* Tidy Modeling with R book: <https://www.tmwr.org>
+* usemodels to create code snippets <https://usemodels.tidymodels.org/>
+

@@ -1,0 +1,20 @@
+project:
+  type: website
+  render:
+    - "*.qmd"
+  output-dir: docs
+
+website:
+  title: "tidymodels workshop"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+
+format:
+  html:
+    theme: pulse
+    css: styles.css
+    toc: true
+
+fig-format: svg

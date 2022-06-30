@@ -1,0 +1,257 @@
+---
+title: "Building better workflows"
+subtitle: "Intelligence artificielle et santé, Nantes 2022"
+author: "Hannah Frick"
+format: 
+  revealjs:
+    slide-number: true
+    theme: [default, tidymodels.scss]
+    width: 1600
+    height: 900
+knitr:
+  opts_chunk: 
+    echo: true
+    collapse: true
+    comment: "#>"
+---
+
+```{r}
+#| include: false
+#| file: setup.R
+```
+
+```{r previously}
+#| include: false
+library(tidymodels)
+
+data("ad_data", package = "modeldata")
+alz <- ad_data
+
+set.seed(123)
+alz_split <- initial_split(alz, strata = Class, prop = .9)
+alz_train <- training(alz_split) 
+alz_test <- testing(alz_split)
+
+set.seed(100)
+alz_folds <- 
+    vfold_cv(alz_train, v = 10, strata = Class)
+```
+
+# Build a better training set with recipes
+
+## Preprocessing options
+
+- Encode categorical predictors
+- Center and scale variables
+- Handle class imbalance
+- Impute missing data
+- Perform dimensionality reduction 
+- *A lot more!*
+
+:::{.notes}
+- recipes is an extensible framework
+- textrecipes for preprocessing text data
+:::
+
+## A first recipe
+
+```{r}
+alz_rec <- 
+  recipe(Class ~ ., data = alz_train)
+```
+
+Based on the formula, the function assigns columns to roles of "outcome" or "predictor"
+
+```{r}
+summary(alz_rec)
+```
+
+## Penalized logistic regression
+
+```{r}
+lr_pen_spec <- 
+  logistic_reg(penalty = 0.1) %>% 
+  set_engine("glmnet") %>% 
+  set_mode("classification")
+```
+
+:::{.notes}
+- requires all numeric predictors
+- and all should to be centered and scaled
+:::
+
+## A basic recipe
+
+```{r}
+alz_rec <- 
+  recipe(Class ~ ., data = alz_train) %>% 
+  step_other(Genotype, threshold = .03)
+```
+
+## A basic recipe
+
+```{r}
+alz_rec <- 
+  recipe(Class ~ ., data = alz_train) %>% 
+  step_other(Genotype, threshold = .03) %>%
+  step_dummy(all_nominal_predictors()) 
+```
+
+:::{.notes}
+- applied to all nominal predictors!
+- recipes selectors: by type or by role or both!
+:::
+
+## A basic recipe
+
+```{r}
+#| code-line-numbers: "4"
+alz_rec <- 
+  recipe(Class ~ ., data = alz_train) %>% 
+  step_other(Genotype, threshold = .03) %>%
+  step_novel(all_nominal_predictors()) %>% 
+  step_dummy(all_nominal_predictors()) 
+```
+
+:::{.notes}
+- Adds a catch-all level to a factor for any new values not encountered in model training, to avoid hiccups with new, unknown factor levels
+- **before** step_dummy()
+:::
+
+## A basic recipe
+
+```{r}
+alz_rec <- 
+  recipe(Class ~ ., data = alz_train) %>% 
+  step_other(Genotype, threshold = .03) %>%
+  step_novel(all_nominal_predictors()) %>% 
+  step_dummy(all_nominal_predictors()) %>% 
+  step_zv(all_predictors()) 
+```
+
+
+## A basic recipe
+
+```{r}
+alz_rec <- 
+  recipe(Class ~ ., data = alz_train) %>% 
+  step_other(Genotype, threshold = .03) %>%
+  step_novel(all_nominal_predictors()) %>% 
+  step_dummy(all_nominal_predictors()) %>% 
+  step_zv(all_predictors()) %>% 
+  step_normalize(all_numeric())
+```
+
+:::{.notes}
+- learn the mean and sd of each numeric column and save it to apply to any dataset to normalize
+- which brings us the question: what's the estimation part? 
+:::
+
+
+## What do you consider the estimation part?
+
+![](images/faux-model.svg){width="120%"}
+
+:::{.notes}
+There are cases where this could go really wrong:
+
+- Poor estimation of performance (by treating the PCA parts as known)
+- Selection bias in feature selection
+- Information leakage
+
+the more complex/powerful the preprocessing is, the more this is a problem!
+:::
+
+## What do you consider the estimation part?
+
+![](images/the-model.svg){width="120%"}
+
+:::{.notes}
+- applies to train vs test
+- also applies to all the cv folds!
+- tidymodels design principle is to provide tools that make good modelling practice easy: "pit of success"
+:::
+
+## Bundle components in a `workflow()`
+
+```{r}
+alz_wflow <- workflow() %>% 
+  add_model(lr_pen_spec) %>% 
+  add_recipe(alz_rec)
+```
+
+:::{.notes}
+- can use other preprocessors: `add_formula()`, `add_variables()`
+- use a workflow like you've use the model before
+:::
+
+## Use a workflow
+
+```{r}
+alz_wflow %>% 
+  fit(alz_train) %>% 
+  predict(alz_test)
+```
+
+:::{.notes}
+- fit: estimate and apply recipe to train
+- predict: apply already estimated recipe to test
+:::
+
+## Use a workflow
+
+```{r}
+alz_res <- alz_wflow %>% 
+  fit_resamples(alz_folds) 
+alz_res
+```
+
+## Use a workflow
+
+```{r}
+alz_res %>% 
+  collect_metrics()
+```
+
+## Debugging a recipe
+
+90% of the time, you will want to use a workflow to estimate and apply a recipe. To do it manually, prep and bake!
+
+```{r}
+# prepping a recipe calculates the necessary estimates
+alz_rec_prepped <- prep(alz_rec)
+
+# baking a recipe applies those to a data set
+bake(alz_rec_prepped, new_data = NULL)
+```
+
+## Tidying a recipe
+
+```{r}
+tidy(alz_rec)
+```
+
+## Tidying a recipe
+
+```{r}
+tidy(alz_rec_prepped, number = 5)
+```
+
+:::{.notes}
+access the stats for a step (after estimation/prep)
+:::
+
+
+## Your turn {transition="slide-in"}
+
+<!-- ![](images/parsnip-flagger.jpg){.absolute top="0" right="0" width="150" height="150"} -->
+![](hexes/tidymodels.png){.absolute top="0" right="0" height="25%"}
+
+*Build a workflow with a nearest neighbor model and an appropriate recipe.*
+
+*What are the performance estimates via 10-fold cross-validation?*
+
+```{r}
+#| echo: false
+countdown(minutes = 10, id = "knn-workflow")
+```

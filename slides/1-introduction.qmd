@@ -1,0 +1,150 @@
+---
+title: "Introduction to tidymodels"
+subtitle: "Intelligence artificielle et santé, Nantes 2022"
+author: "Hannah Frick"
+format: 
+  revealjs:
+    slide-number: true
+    theme: [default, tidymodels.scss]
+    width: 1600
+    height: 900
+knitr:
+  opts_chunk: 
+    echo: true
+    collapse: true
+    comment: "#>"
+---
+
+```{r}
+#| include: false
+#| file: setup.R
+```
+
+Course website <FIXME>
+
+## whoami
+
+## Our goals for this workshop
+
+-   Introduce tidymodels and its general philosophy on modeling.
+-   Help you become proficient with the core packages for modeling.
+-   Point you to places to learn more and get help.
+
+## Why tidymodels?
+
+There are several other modeling frameworks in R that try to:
+
+-   create a uniform, [cohesive]{.pkg}, and unsurprising set of modeling APIs
+
+Examples are [caret]{.pkg}, [mlr3]{.pkg}, and others.
+
+-   [caret]{.pkg} is more favorable for people who prefer base R/traditional interfaces.
+-   [mlr3]{.pkg} is more pythonic and also has many features.
+-   [tidymodels]{.pkg} would probably be preferable to those who place importance on a tidy *R* interface, a large number of features, and the idea that the interfaces should enable the "pit of success".
+
+
+## The tidymodels package
+
+There are a lot of tidymodels packages but about 90% of the work is done by 5 packages. ([rsample]{.pkg}, [recipes]{.pkg}, [parsnip]{.pkg}, [tune]{.pkg}, and [yardstick]{.pkg})
+
+The best way to get started with tidymodels is to use the [tidymodels]{.pkg} meta-package. It loads the core packages plus some tidyverse packages.
+
+Some helpful links:
+
+-   List of [all tidymodels functions](https://www.tidymodels.org/find/#search-all-of-tidymodels)
+-   List of [all parsnip models](https://www.tidymodels.org/find/parsnip/)
+-   List of [all recipe steps](https://www.tidymodels.org/find/recipes/)
+
+:::{.notes}
+click on the search button on tidymodels.org for all those lists
+:::
+
+
+## The tidymodels package
+
+```{r, message=TRUE}
+library(tidymodels)
+```
+
+## Managing name conflicts
+
+```{r, message=TRUE}
+tidymodels_prefer(quiet = FALSE)
+```
+
+## Alzheimer's disease data
+
+Data from a clinical trial of individuals with well-characterized cognitive impairment, and age-matched control participants.
+
+```{r}
+# install.packages("modeldata")
+library(modeldata)
+data("ad_data")
+alz <- ad_data
+
+glimpse(alz)
+```
+
+
+## Alzheimer's disease data
+
+::: columns
+::: {.column width="50%"}
+
+- 1 categorical outcome: `Class`
+- `r ncol(alz) - 1` predictors
+- 126 protein measurements
+- also: `age`, `male`, `Genotype`
+
+::: 
+::: {.column width="50%"}
+
+```{r}
+#| echo: false
+ggplot(alz, aes(x = tau, 
+                y = VEGF,
+                colour = Class)) +
+  geom_point(alpha = .5, size = 3) #+ scale_color_manual(values = c("#1a162d", "#CA225E"))
+```
+
+:::
+:::
+
+
+## Your turn {transition="slide-in"}
+
+<!-- ![](images/parsnip-flagger.jpg){.absolute top="0" right="0" width="150" height="150"} -->
+![](hexes/tidymodels.png){.absolute top="0" right="0" height="25%"}
+
+::: columns
+::: {.column width="70%"}
+*Explore the data.*
+
+```{r}
+#| eval: false
+library(tidymodels)
+tidymodels_prefer()
+
+data("ad_data", package = "modeldata")
+alz <- ad_data
+```
+:::
+:::
+
+```{r}
+#| echo: false
+countdown(minutes = 10, id = "explore-data")
+```
+
+
+## Schedule for today
+
+- A minimal model
+- A better workflow
+- A tuned model
+
+:::{.notes}
+- get through the fundamentals
+- make our model better
+- let the computer make our model better
+:::
