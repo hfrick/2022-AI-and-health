@@ -78,8 +78,9 @@ The main two classes of optimization models are:
 Let's take our previous recipe and add a few changes:
 
 ```{r}
-#| code-line-numbers: "|1,6"
-lr_pen_spec <- logistic_reg(penalty = tune(), mixture = tune()) %>% 
+#| code-line-numbers: "|2,7"
+lr_pen_spec <- 
+  logistic_reg(penalty = tune(), mixture = tune()) %>% 
   set_engine("glmnet") %>% 
   set_mode("classification")
 alz_rec <- 
@@ -138,8 +139,12 @@ grid
 
 ```{r show-grid}
 #| output-location: column
+#| out-width: '90%'
 #| fig-width: 5
-#| fig-height: 5
+#| fig-height: 5.1
+#| fig-align: 'center'
+#| dev: 'svg'
+#| dev-args: list(bg = "transparent")
 set.seed(2)
 grid <- 
   alz_wflow %>% 
@@ -168,16 +173,20 @@ lr_pen_res
 ```
 
 :::{.notes}
-`tune_grid()` is pretty representative of their syntax (and is similar to `fit_resamples()`)
-
-grid can also be an integer for an automatic grid
-
-to keep predictions: `ctrl <- control_grid(save_pred = TRUE)`
+- `tune_grid()` is `fit_resamples()` over a grid
+- grid can also be an integer for an automatic grid
+- to keep predictions: `ctrl <- control_grid(save_pred = TRUE)`
 :::
 
 ## Grid results `r I(hexes(c("tune")))`
 
-```{r autoplot, out.width = '90%', fig.align='center', dev = 'svg', dev.args = list(bg = "transparent"), fig.width=10, fig.height=5}
+```{r autoplot}
+#| out-width: '90%'
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: 'center'
+#| dev: 'svg'
+#| dev-args: list(bg = "transparent")
 autoplot(lr_pen_res)
 ```
 
@@ -212,7 +221,7 @@ You can create a tibble of your own or use one of the `tune::select_*()` functio
 <!-- ![](images/parsnip-flagger.jpg){.absolute top="0" right="0" width="150" height="150"} -->
 ![](hexes/tidymodels.png){.absolute top="0" right="0" height="25%"}
 
-*Tune the nearest neighbor model.*
+*Tune the nearest neighbor workflow.*
 
 ```{r}
 #| echo: false

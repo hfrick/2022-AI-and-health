@@ -320,6 +320,23 @@ alz_test <- testing(alz_split)
 countdown(minutes = 10, id = "fit-decision-tree")
 ```
 
+---
+
+```{r}
+tree_spec <- decision_tree() %>%
+  set_engine("rpart") %>%
+  set_mode("classification")
+
+tree_fit <- tree_spec %>%
+  fit(Class ~ tau + VEGF, data = alz)
+
+tree_fit %>%
+  augment(new_data = alz_test) %>%
+  accuracy(truth = Class, estimate = .pred_class)
+```
+
+
+
 # Which model is better? `r emo::ji("thinking_face")`
 
 # We already used the test set! `r emo::ji("gem")`
@@ -378,9 +395,15 @@ lr_spec %>%
   )
 ```
 
+:::{.notes}
+- metrics are in a list column
+- convenience function for accessing it
+:::
+
 ## Evaluating model performance
 
 ```{r}
+#| code-line-numbers: "6"
 lr_spec %>% 
   fit_resamples(
     Class ~ tau + VEGF, 
@@ -407,9 +430,11 @@ countdown(minutes = 10, id = "decision-tree-resamling")
 ## How did we do?
 
 ```{r}
-decision_tree() %>% 
-  set_engine("rpart") %>% 
-  set_mode("classification") %>% 
+set.seed(100)
+alz_folds <- 
+    vfold_cv(alz_train, v = 5, strata = Class)
+
+tree_spec %>% 
   fit_resamples(
     Class ~ tau + VEGF, 
     resamples = alz_folds

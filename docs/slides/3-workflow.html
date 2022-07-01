@@ -457,8 +457,9 @@
 </div>
 <aside class="notes">
 <ul>
-<li>requires all numeric predictors</li>
+<li>requires all numeric predictors, ie we have to make dummy variables</li>
 <li>and all should to be centered and scaled</li>
+<li>let’s look at factor before we make dummy variables</li>
 </ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -569,6 +570,24 @@
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section>
+<section id="your-turn" class="slide level2" data-transition="slide-in">
+<h2>Your turn</h2>
+<!-- ![](images/parsnip-flagger.jpg){.absolute top="0" right="0" width="150" height="150"} -->
+<p><img data-src="hexes/tidymodels.png" class="absolute" style="top: 0px; right: 0px; height: 25%; "></p>
+<p><em>What are 3 ways in which you often preprocess your data?</em></p>
+<p><em>See if you can find corresponding recipe steps.</em></p>
+<ul>
+<li>Reference index of <a href="https://recipes.tidymodels.org/" class="uri">https://recipes.tidymodels.org/</a></li>
+<li>Search across receipes and extensions: <a href="https://www.tidymodels.org/find/recipes/" class="uri">https://www.tidymodels.org/find/recipes/</a></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div class="countdown" id="recipe-exploration" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">07</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</div>
+</div>
 </section>
 <section id="what-do-you-consider-the-estimation-part" class="slide level2">
 <h2>What do you consider the estimation part?</h2>
@@ -789,7 +808,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="your-turn" class="slide level2" data-transition="slide-in">
+<section id="your-turn-1" class="slide level2" data-transition="slide-in">
 <h2>Your turn</h2>
 <!-- ![](images/parsnip-flagger.jpg){.absolute top="0" right="0" width="150" height="150"} -->
 <p><img data-src="hexes/tidymodels.png" class="absolute" style="top: 0px; right: 0px; height: 25%; "></p>
@@ -801,6 +820,26 @@
 <code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
 </div>
 </div>
+</div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>knn_spec <span class="ot">&lt;-</span> <span class="fu">nearest_neighbor</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">set_engine</span>(<span class="st">"kknn"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4"></a></span>
+<span id="cb16-5"><a href="#cb16-5"></a>alz_knn_wflow <span class="ot">&lt;-</span> alz_wflow <span class="sc">%&gt;%</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>  <span class="fu">update_model</span>(knn_spec)</span>
+<span id="cb16-7"><a href="#cb16-7"></a></span>
+<span id="cb16-8"><a href="#cb16-8"></a>alz_knn_wflow <span class="sc">%&gt;%</span></span>
+<span id="cb16-9"><a href="#cb16-9"></a>  <span class="fu">fit_resamples</span>(alz_folds) <span class="sc">%&gt;%</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a>  <span class="fu">collect_metrics</span>()</span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="co">#&gt; # A tibble: 2 × 6</span></span>
+<span id="cb16-12"><a href="#cb16-12"></a><span class="co">#&gt;   .metric  .estimator  mean     n std_err .config             </span></span>
+<span id="cb16-13"><a href="#cb16-13"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               </span></span>
+<span id="cb16-14"><a href="#cb16-14"></a><span class="co">#&gt; 1 accuracy binary     0.722    10  0.0217 Preprocessor1_Model1</span></span>
+<span id="cb16-15"><a href="#cb16-15"></a><span class="co">#&gt; 2 roc_auc  binary     0.777    10  0.0197 Preprocessor1_Model1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 <div class="footer footer-default">

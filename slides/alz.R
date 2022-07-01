@@ -53,8 +53,7 @@ tree_fit <- tree_spec %>%
   fit(Class ~ tau + VEGF, data = alz)
 
 tree_fit %>%
-  predict(new_data = alz_test) %>%
-  bind_cols(alz_test) %>%
+  augment(new_data = alz_test) %>%
   accuracy(truth = Class, estimate = .pred_class)
 
 ## other prediction types -> augment
@@ -130,9 +129,8 @@ knn_spec <- nearest_neighbor() %>%
   set_engine("kknn") %>%
   set_mode("classification")
 
-alz_knn_wflow <- workflow() %>%
-  add_model(knn_spec) %>%
-  add_recipe(alz_rec)
+alz_knn_wflow <- alz_wflow %>%
+  update_model(knn_spec)
 
 alz_knn_wflow %>%
   fit_resamples(alz_folds) %>%
@@ -140,7 +138,8 @@ alz_knn_wflow %>%
 
 # tuning  -----------------------------------------------------------------
 
-lr_pen_spec <- logistic_reg(penalty = tune(), mixture = tune()) %>%
+lr_pen_spec <-
+  logistic_reg(penalty = tune(), mixture = tune()) %>%
   set_engine("glmnet") %>%
   set_mode("classification")
 alz_rec <-

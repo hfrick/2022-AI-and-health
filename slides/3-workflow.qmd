@@ -77,8 +77,9 @@ lr_pen_spec <-
 ```
 
 :::{.notes}
-- requires all numeric predictors
+- requires all numeric predictors, ie we have to make dummy variables
 - and all should to be centered and scaled
+- let's look at factor before we make dummy variables
 :::
 
 ## A basic recipe `r hexes("recipes")`
@@ -147,6 +148,23 @@ alz_rec <-
 - learn the mean and sd of each numeric column and save it to apply to any dataset to normalize
 - which brings us the question: what's the estimation part? 
 :::
+
+## Your turn {transition="slide-in"}
+
+<!-- ![](images/parsnip-flagger.jpg){.absolute top="0" right="0" width="150" height="150"} -->
+![](hexes/tidymodels.png){.absolute top="0" right="0" height="25%"}
+
+*What are 3 ways in which you often preprocess your data?*
+
+*See if you can find corresponding recipe steps.*
+
+- Reference index of <https://recipes.tidymodels.org/>
+- Search across receipes and extensions: <https://www.tidymodels.org/find/recipes/>
+
+```{r}
+#| echo: false
+countdown(minutes = 7, id = "recipe-exploration")
+```
 
 
 ## What do you consider the estimation part?
@@ -256,3 +274,19 @@ access the stats for a step (after estimation/prep)
 #| echo: false
 countdown(minutes = 10, id = "knn-workflow")
 ```
+
+---
+
+```{r}
+knn_spec <- nearest_neighbor() %>%
+  set_engine("kknn") %>%
+  set_mode("classification")
+
+alz_knn_wflow <- alz_wflow %>%
+  update_model(knn_spec)
+
+alz_knn_wflow %>%
+  fit_resamples(alz_folds) %>%
+  collect_metrics()
+```
+

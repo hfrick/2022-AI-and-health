@@ -708,6 +708,25 @@
 </div>
 </div>
 </div>
+</section>
+<section class="slide level2">
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>tree_spec <span class="ot">&lt;-</span> <span class="fu">decision_tree</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4"></a></span>
+<span id="cb12-5"><a href="#cb12-5"></a>tree_fit <span class="ot">&lt;-</span> tree_spec <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>  <span class="fu">fit</span>(Class <span class="sc">~</span> tau <span class="sc">+</span> VEGF, <span class="at">data =</span> alz)</span>
+<span id="cb12-7"><a href="#cb12-7"></a></span>
+<span id="cb12-8"><a href="#cb12-8"></a>tree_fit <span class="sc">%&gt;%</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a>  <span class="fu">augment</span>(<span class="at">new_data =</span> alz_test) <span class="sc">%&gt;%</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>  <span class="fu">accuracy</span>(<span class="at">truth =</span> Class, <span class="at">estimate =</span> .pred_class)</span>
+<span id="cb12-11"><a href="#cb12-11"></a><span class="co">#&gt; # A tibble: 1 × 3</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a><span class="co">#&gt;   .metric  .estimator .estimate</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="co">#&gt; 1 accuracy binary         0.743</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section></section>
 <section id="which-model-is-better" class="title-slide slide level1 center">
 <h1>Which model is better? 🤔</h1>
@@ -739,19 +758,19 @@
 <h2>Resampling <img data-src="hexes/rsample.png" class="absolute" style="top: -20px; right: 0px; width: 64px; height: 74.24px; "></h2>
 <p>What is in this?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb12-2"><a href="#cb12-2"></a>alz_folds <span class="ot">&lt;-</span> </span>
-<span id="cb12-3"><a href="#cb12-3"></a>    <span class="fu">vfold_cv</span>(alz_train, <span class="at">v =</span> <span class="dv">5</span>, <span class="at">strata =</span> Class)</span>
-<span id="cb12-4"><a href="#cb12-4"></a>alz_folds</span>
-<span id="cb12-5"><a href="#cb12-5"></a><span class="co">#&gt; #  5-fold cross-validation using stratification </span></span>
-<span id="cb12-6"><a href="#cb12-6"></a><span class="co">#&gt; # A tibble: 5 × 2</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a><span class="co">#&gt;   splits           id   </span></span>
-<span id="cb12-8"><a href="#cb12-8"></a><span class="co">#&gt;   &lt;list&gt;           &lt;chr&gt;</span></span>
-<span id="cb12-9"><a href="#cb12-9"></a><span class="co">#&gt; 1 &lt;split [237/61]&gt; Fold1</span></span>
-<span id="cb12-10"><a href="#cb12-10"></a><span class="co">#&gt; 2 &lt;split [238/60]&gt; Fold2</span></span>
-<span id="cb12-11"><a href="#cb12-11"></a><span class="co">#&gt; 3 &lt;split [239/59]&gt; Fold3</span></span>
-<span id="cb12-12"><a href="#cb12-12"></a><span class="co">#&gt; 4 &lt;split [239/59]&gt; Fold4</span></span>
-<span id="cb12-13"><a href="#cb12-13"></a><span class="co">#&gt; 5 &lt;split [239/59]&gt; Fold5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>alz_folds <span class="ot">&lt;-</span> </span>
+<span id="cb13-3"><a href="#cb13-3"></a>    <span class="fu">vfold_cv</span>(alz_train, <span class="at">v =</span> <span class="dv">5</span>, <span class="at">strata =</span> Class)</span>
+<span id="cb13-4"><a href="#cb13-4"></a>alz_folds</span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="co">#&gt; #  5-fold cross-validation using stratification </span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="co">#&gt; # A tibble: 5 × 2</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="co">#&gt;   splits           id   </span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="co">#&gt;   &lt;list&gt;           &lt;chr&gt;</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="co">#&gt; 1 &lt;split [237/61]&gt; Fold1</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="co">#&gt; 2 &lt;split [238/60]&gt; Fold2</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="co">#&gt; 3 &lt;split [239/59]&gt; Fold3</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a><span class="co">#&gt; 4 &lt;split [239/59]&gt; Fold4</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt; 5 &lt;split [239/59]&gt; Fold5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <aside class="notes">
 <ul>
@@ -773,52 +792,68 @@
 <section id="we-need-a-new-way-to-fit" class="slide level2">
 <h2>We need a new way to fit</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>split1 <span class="ot">&lt;-</span> alz_folds<span class="sc">$</span>splits[[<span class="dv">1</span>]]</span>
-<span id="cb13-2"><a href="#cb13-2"></a>split1_analysis <span class="ot">&lt;-</span> <span class="fu">analysis</span>(split1)</span>
-<span id="cb13-3"><a href="#cb13-3"></a>split1_assessment <span class="ot">&lt;-</span> <span class="fu">assessment</span>(split1)</span>
-<span id="cb13-4"><a href="#cb13-4"></a>tree_mod <span class="sc">%&gt;%</span> </span>
-<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">fit</span>(Class <span class="sc">~</span> ., <span class="at">data =</span> split1_analysis) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-6"><a href="#cb13-6"></a>  <span class="fu">predict</span>(split1_assessment) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-7"><a href="#cb13-7"></a>  <span class="fu">bind_cols</span>(split1_assessment) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-8"><a href="#cb13-8"></a>  <span class="fu">accuracy</span>(Class, .pred_class)</span>
-<span id="cb13-9"><a href="#cb13-9"></a><span class="co"># rinse and repeat</span></span>
-<span id="cb13-10"><a href="#cb13-10"></a>split2 <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>split1 <span class="ot">&lt;-</span> alz_folds<span class="sc">$</span>splits[[<span class="dv">1</span>]]</span>
+<span id="cb14-2"><a href="#cb14-2"></a>split1_analysis <span class="ot">&lt;-</span> <span class="fu">analysis</span>(split1)</span>
+<span id="cb14-3"><a href="#cb14-3"></a>split1_assessment <span class="ot">&lt;-</span> <span class="fu">assessment</span>(split1)</span>
+<span id="cb14-4"><a href="#cb14-4"></a>tree_mod <span class="sc">%&gt;%</span> </span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="fu">fit</span>(Class <span class="sc">~</span> ., <span class="at">data =</span> split1_analysis) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">predict</span>(split1_assessment) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-7"><a href="#cb14-7"></a>  <span class="fu">bind_cols</span>(split1_assessment) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-8"><a href="#cb14-8"></a>  <span class="fu">accuracy</span>(Class, .pred_class)</span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="co"># rinse and repeat</span></span>
+<span id="cb14-10"><a href="#cb14-10"></a>split2 <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="evaluating-model-performance" class="slide level2">
-<h2>Evaluating model performance</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>lr_spec <span class="sc">%&gt;%</span> </span>
-<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">fit_resamples</span>(</span>
-<span id="cb14-3"><a href="#cb14-3"></a>    Class <span class="sc">~</span> tau <span class="sc">+</span> VEGF, </span>
-<span id="cb14-4"><a href="#cb14-4"></a>    <span class="at">resamples =</span> alz_folds</span>
-<span id="cb14-5"><a href="#cb14-5"></a>  )</span>
-<span id="cb14-6"><a href="#cb14-6"></a><span class="co">#&gt; # Resampling results</span></span>
-<span id="cb14-7"><a href="#cb14-7"></a><span class="co">#&gt; # 5-fold cross-validation using stratification </span></span>
-<span id="cb14-8"><a href="#cb14-8"></a><span class="co">#&gt; # A tibble: 5 × 4</span></span>
-<span id="cb14-9"><a href="#cb14-9"></a><span class="co">#&gt;   splits           id    .metrics         .notes          </span></span>
-<span id="cb14-10"><a href="#cb14-10"></a><span class="co">#&gt;   &lt;list&gt;           &lt;chr&gt; &lt;list&gt;           &lt;list&gt;          </span></span>
-<span id="cb14-11"><a href="#cb14-11"></a><span class="co">#&gt; 1 &lt;split [237/61]&gt; Fold1 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt;</span></span>
-<span id="cb14-12"><a href="#cb14-12"></a><span class="co">#&gt; 2 &lt;split [238/60]&gt; Fold2 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt;</span></span>
-<span id="cb14-13"><a href="#cb14-13"></a><span class="co">#&gt; 3 &lt;split [239/59]&gt; Fold3 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt;</span></span>
-<span id="cb14-14"><a href="#cb14-14"></a><span class="co">#&gt; 4 &lt;split [239/59]&gt; Fold4 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt;</span></span>
-<span id="cb14-15"><a href="#cb14-15"></a><span class="co">#&gt; 5 &lt;split [239/59]&gt; Fold5 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="evaluating-model-performance-1" class="slide level2">
 <h2>Evaluating model performance</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>lr_spec <span class="sc">%&gt;%</span> </span>
 <span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">fit_resamples</span>(</span>
 <span id="cb15-3"><a href="#cb15-3"></a>    Class <span class="sc">~</span> tau <span class="sc">+</span> VEGF, </span>
 <span id="cb15-4"><a href="#cb15-4"></a>    <span class="at">resamples =</span> alz_folds</span>
-<span id="cb15-5"><a href="#cb15-5"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-6"><a href="#cb15-6"></a>  <span class="fu">collect_metrics</span>()</span>
-<span id="cb15-7"><a href="#cb15-7"></a><span class="co">#&gt; # A tibble: 2 × 6</span></span>
-<span id="cb15-8"><a href="#cb15-8"></a><span class="co">#&gt;   .metric  .estimator  mean     n std_err .config             </span></span>
-<span id="cb15-9"><a href="#cb15-9"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               </span></span>
-<span id="cb15-10"><a href="#cb15-10"></a><span class="co">#&gt; 1 accuracy binary     0.856     5  0.0186 Preprocessor1_Model1</span></span>
-<span id="cb15-11"><a href="#cb15-11"></a><span class="co">#&gt; 2 roc_auc  binary     0.890     5  0.0178 Preprocessor1_Model1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-5"><a href="#cb15-5"></a>  )</span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="co">#&gt; # Resampling results</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="co">#&gt; # 5-fold cross-validation using stratification </span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="co">#&gt; # A tibble: 5 × 4</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co">#&gt;   splits           id    .metrics         .notes          </span></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="co">#&gt;   &lt;list&gt;           &lt;chr&gt; &lt;list&gt;           &lt;list&gt;          </span></span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="co">#&gt; 1 &lt;split [237/61]&gt; Fold1 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="co">#&gt; 2 &lt;split [238/60]&gt; Fold2 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="co">#&gt; 3 &lt;split [239/59]&gt; Fold3 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a><span class="co">#&gt; 4 &lt;split [239/59]&gt; Fold4 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb15-15"><a href="#cb15-15"></a><span class="co">#&gt; 5 &lt;split [239/59]&gt; Fold5 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<aside class="notes">
+<ul>
+<li>metrics are in a list column</li>
+<li>convenience function for accessing it</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="evaluating-model-performance-1" class="slide level2">
+<h2>Evaluating model performance</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16" data-code-line-numbers="6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>lr_spec <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">fit_resamples</span>(</span>
+<span id="cb16-3"><a href="#cb16-3"></a>    Class <span class="sc">~</span> tau <span class="sc">+</span> VEGF, </span>
+<span id="cb16-4"><a href="#cb16-4"></a>    <span class="at">resamples =</span> alz_folds</span>
+<span id="cb16-5"><a href="#cb16-5"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-6"><a href="#cb16-6"></a>  <span class="fu">collect_metrics</span>()</span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="co">#&gt; # A tibble: 2 × 6</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="co">#&gt;   .metric  .estimator  mean     n std_err .config             </span></span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               </span></span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="co">#&gt; 1 accuracy binary     0.856     5  0.0186 Preprocessor1_Model1</span></span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="co">#&gt; 2 roc_auc  binary     0.890     5  0.0178 Preprocessor1_Model1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="your-turn-2" class="slide level2" data-transition="slide-in">
@@ -838,19 +873,21 @@
 <section id="how-did-we-do" class="slide level2">
 <h2>How did we do?</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">decision_tree</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb16-4"><a href="#cb16-4"></a>  <span class="fu">fit_resamples</span>(</span>
-<span id="cb16-5"><a href="#cb16-5"></a>    Class <span class="sc">~</span> tau <span class="sc">+</span> VEGF, </span>
-<span id="cb16-6"><a href="#cb16-6"></a>    <span class="at">resamples =</span> alz_folds</span>
-<span id="cb16-7"><a href="#cb16-7"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb16-8"><a href="#cb16-8"></a>  <span class="fu">collect_metrics</span>()</span>
-<span id="cb16-9"><a href="#cb16-9"></a><span class="co">#&gt; # A tibble: 2 × 6</span></span>
-<span id="cb16-10"><a href="#cb16-10"></a><span class="co">#&gt;   .metric  .estimator  mean     n std_err .config             </span></span>
-<span id="cb16-11"><a href="#cb16-11"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               </span></span>
-<span id="cb16-12"><a href="#cb16-12"></a><span class="co">#&gt; 1 accuracy binary     0.832     5  0.0229 Preprocessor1_Model1</span></span>
-<span id="cb16-13"><a href="#cb16-13"></a><span class="co">#&gt; 2 roc_auc  binary     0.850     5  0.0325 Preprocessor1_Model1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb17-2"><a href="#cb17-2"></a>alz_folds <span class="ot">&lt;-</span> </span>
+<span id="cb17-3"><a href="#cb17-3"></a>    <span class="fu">vfold_cv</span>(alz_train, <span class="at">v =</span> <span class="dv">5</span>, <span class="at">strata =</span> Class)</span>
+<span id="cb17-4"><a href="#cb17-4"></a></span>
+<span id="cb17-5"><a href="#cb17-5"></a>tree_spec <span class="sc">%&gt;%</span> </span>
+<span id="cb17-6"><a href="#cb17-6"></a>  <span class="fu">fit_resamples</span>(</span>
+<span id="cb17-7"><a href="#cb17-7"></a>    Class <span class="sc">~</span> tau <span class="sc">+</span> VEGF, </span>
+<span id="cb17-8"><a href="#cb17-8"></a>    <span class="at">resamples =</span> alz_folds</span>
+<span id="cb17-9"><a href="#cb17-9"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-10"><a href="#cb17-10"></a>  <span class="fu">collect_metrics</span>()</span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="co">#&gt; # A tibble: 2 × 6</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a><span class="co">#&gt;   .metric  .estimator  mean     n std_err .config             </span></span>
+<span id="cb17-13"><a href="#cb17-13"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               </span></span>
+<span id="cb17-14"><a href="#cb17-14"></a><span class="co">#&gt; 1 accuracy binary     0.832     5  0.0229 Preprocessor1_Model1</span></span>
+<span id="cb17-15"><a href="#cb17-15"></a><span class="co">#&gt; 2 roc_auc  binary     0.850     5  0.0325 Preprocessor1_Model1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 <div class="footer footer-default">

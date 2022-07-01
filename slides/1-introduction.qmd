@@ -114,6 +114,12 @@ glimpse(alz)
 
 ```{r}
 #| echo: false
+#| out-width: '90%'
+#| fig-width: 5
+#| fig-height: 5.1
+#| fig-align: 'center'
+#| dev: 'svg'
+#| dev-args: list(bg = "transparent")
 ggplot(alz, aes(x = tau, 
                 y = VEGF,
                 colour = Class)) +

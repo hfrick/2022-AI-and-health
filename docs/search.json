@@ -263,7 +263,7 @@
     "href": "slides/2-model.html#evaluating-model-performance",
     "title": "Building models",
     "section": "Evaluating model performance",
-    "text": "Evaluating model performance\n\nlr_spec %>% \n  fit_resamples(\n    Class ~ tau + VEGF, \n    resamples = alz_folds\n  )\n#> # Resampling results\n#> # 5-fold cross-validation using stratification \n#> # A tibble: 5 × 4\n#>   splits           id    .metrics         .notes          \n#>   <list>           <chr> <list>           <list>          \n#> 1 <split [237/61]> Fold1 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 2 <split [238/60]> Fold2 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 3 <split [239/59]> Fold3 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 4 <split [239/59]> Fold4 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 5 <split [239/59]> Fold5 <tibble [2 × 4]> <tibble [0 × 3]>"
+    "text": "Evaluating model performance\n\nlr_spec %>% \n  fit_resamples(\n    Class ~ tau + VEGF, \n    resamples = alz_folds\n  )\n#> # Resampling results\n#> # 5-fold cross-validation using stratification \n#> # A tibble: 5 × 4\n#>   splits           id    .metrics         .notes          \n#>   <list>           <chr> <list>           <list>          \n#> 1 <split [237/61]> Fold1 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 2 <split [238/60]> Fold2 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 3 <split [239/59]> Fold3 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 4 <split [239/59]> Fold4 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 5 <split [239/59]> Fold5 <tibble [2 × 4]> <tibble [0 × 3]>\n\n\n\nmetrics are in a list column\nconvenience function for accessing it"
   },
   {
     "objectID": "slides/2-model.html#your-turn-2",
@@ -298,7 +298,7 @@
     "href": "slides/3-workflow.html#penalized-logistic-regression",
     "title": "Building better workflows",
     "section": "Penalized logistic regression ",
-    "text": "Penalized logistic regression \n\nlr_pen_spec <- \n  logistic_reg(penalty = 0.1) %>% \n  set_engine(\"glmnet\") %>% \n  set_mode(\"classification\")\n\n\n\nrequires all numeric predictors\nand all should to be centered and scaled"
+    "text": "Penalized logistic regression \n\nlr_pen_spec <- \n  logistic_reg(penalty = 0.1) %>% \n  set_engine(\"glmnet\") %>% \n  set_mode(\"classification\")\n\n\n\nrequires all numeric predictors, ie we have to make dummy variables\nand all should to be centered and scaled\nlet’s look at factor before we make dummy variables"
   },
   {
     "objectID": "slides/3-workflow.html#what-do-you-consider-the-estimation-part",
@@ -354,7 +354,7 @@
     "href": "slides/3-workflow.html#your-turn",
     "title": "Building better workflows",
     "section": "Your turn",
-    "text": "Your turn\n\n\nBuild a workflow with a nearest neighbor model and an appropriate recipe.\nWhat are the performance estimates via 10-fold cross-validation?\n\n\n\n10:00\n\n\n\n\n\nhttps://hfrick.github.io/2022-AI-and-health/"
+    "text": "Your turn\n\n\nWhat are 3 ways in which you often preprocess your data?\nSee if you can find corresponding recipe steps.\n\nReference index of https://recipes.tidymodels.org/\nSearch across receipes and extensions: https://www.tidymodels.org/find/recipes/\n\n\n\n\n07:00"
   },
   {
     "objectID": "slides/3-workflow.html#debugging-a-recipe",
@@ -382,7 +382,7 @@
     "href": "slides/2-model.html#how-did-we-do",
     "title": "Building models",
     "section": "How did we do?",
-    "text": "How did we do?\n\ndecision_tree() %>% \n  set_engine(\"rpart\") %>% \n  set_mode(\"classification\") %>% \n  fit_resamples(\n    Class ~ tau + VEGF, \n    resamples = alz_folds\n  ) %>% \n  collect_metrics()\n#> # A tibble: 2 × 6\n#>   .metric  .estimator  mean     n std_err .config             \n#>   <chr>    <chr>      <dbl> <int>   <dbl> <chr>               \n#> 1 accuracy binary     0.832     5  0.0229 Preprocessor1_Model1\n#> 2 roc_auc  binary     0.850     5  0.0325 Preprocessor1_Model1\n\n\n\nhttps://hfrick.github.io/2022-AI-and-health/"
+    "text": "How did we do?\n\nset.seed(100)\nalz_folds <- \n    vfold_cv(alz_train, v = 5, strata = Class)\n\ntree_spec %>% \n  fit_resamples(\n    Class ~ tau + VEGF, \n    resamples = alz_folds\n  ) %>% \n  collect_metrics()\n#> # A tibble: 2 × 6\n#>   .metric  .estimator  mean     n std_err .config             \n#>   <chr>    <chr>      <dbl> <int>   <dbl> <chr>               \n#> 1 accuracy binary     0.832     5  0.0229 Preprocessor1_Model1\n#> 2 roc_auc  binary     0.850     5  0.0325 Preprocessor1_Model1\n\n\n\nhttps://hfrick.github.io/2022-AI-and-health/"
   },
   {
     "objectID": "slides/4-tuning.html#tuning-parameters",
@@ -403,14 +403,14 @@
     "href": "slides/4-tuning.html#choosing-tuning-parameters",
     "title": "Tuning models",
     "section": "Choosing tuning parameters    ",
-    "text": "Choosing tuning parameters    \nLet’s take our previous recipe and add a few changes:\n\nlr_pen_spec <- logistic_reg(penalty = tune(), mixture = tune()) %>% \n  set_engine(\"glmnet\") %>% \n  set_mode(\"classification\")\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = tune(\"genotype_threshold\")) %>% \n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) %>% \n  step_zv(all_predictors()) %>% \n  step_normalize(all_numeric())\nalz_wflow <-\n  workflow() %>%\n  add_model(lr_pen_spec) %>%\n  add_recipe(alz_rec)"
+    "text": "Choosing tuning parameters    \nLet’s take our previous recipe and add a few changes:\n\nlr_pen_spec <- \n  logistic_reg(penalty = tune(), mixture = tune()) %>% \n  set_engine(\"glmnet\") %>% \n  set_mode(\"classification\")\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = tune(\"genotype_threshold\")) %>% \n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) %>% \n  step_zv(all_predictors()) %>% \n  step_normalize(all_numeric())\nalz_wflow <-\n  workflow() %>%\n  add_model(lr_pen_spec) %>%\n  add_recipe(alz_rec)"
   },
   {
     "objectID": "slides/4-tuning.html#grid-search-1",
     "href": "slides/4-tuning.html#grid-search-1",
     "title": "Tuning models",
     "section": "Grid search ",
-    "text": "Grid search \n\nset.seed(9)\nlr_pen_res <-\n  alz_wflow %>%\n  tune_grid(resamples = alz_folds, grid = grid)\n\nlr_pen_res\n#> # Tuning results\n#> # 10-fold cross-validation using stratification \n#> # A tibble: 10 × 4\n#>    splits           id     .metrics          .notes          \n#>    <list>           <chr>  <list>            <list>          \n#>  1 <split [267/31]> Fold01 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  2 <split [268/30]> Fold02 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  3 <split [268/30]> Fold03 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  4 <split [268/30]> Fold04 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  5 <split [268/30]> Fold05 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  6 <split [268/30]> Fold06 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  7 <split [268/30]> Fold07 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  8 <split [269/29]> Fold08 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  9 <split [269/29]> Fold09 <tibble [50 × 7]> <tibble [0 × 3]>\n#> 10 <split [269/29]> Fold10 <tibble [50 × 7]> <tibble [0 × 3]>\n\n\ntune_grid() is pretty representative of their syntax (and is similar to fit_resamples())\ngrid can also be an integer for an automatic grid\nto keep predictions: ctrl <- control_grid(save_pred = TRUE)"
+    "text": "Grid search \n\nset.seed(9)\nlr_pen_res <-\n  alz_wflow %>%\n  tune_grid(resamples = alz_folds, grid = grid)\n\nlr_pen_res\n#> # Tuning results\n#> # 10-fold cross-validation using stratification \n#> # A tibble: 10 × 4\n#>    splits           id     .metrics          .notes          \n#>    <list>           <chr>  <list>            <list>          \n#>  1 <split [267/31]> Fold01 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  2 <split [268/30]> Fold02 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  3 <split [268/30]> Fold03 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  4 <split [268/30]> Fold04 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  5 <split [268/30]> Fold05 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  6 <split [268/30]> Fold06 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  7 <split [268/30]> Fold07 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  8 <split [269/29]> Fold08 <tibble [50 × 7]> <tibble [0 × 3]>\n#>  9 <split [269/29]> Fold09 <tibble [50 × 7]> <tibble [0 × 3]>\n#> 10 <split [269/29]> Fold10 <tibble [50 × 7]> <tibble [0 × 3]>\n\n\n\ntune_grid() is fit_resamples() over a grid\ngrid can also be an integer for an automatic grid\nto keep predictions: ctrl <- control_grid(save_pred = TRUE)"
   },
   {
     "objectID": "slides/4-tuning.html#grid-search",
@@ -445,7 +445,7 @@
     "href": "slides/4-tuning.html#the-results",
     "title": "Tuning models",
     "section": "The results  ",
-    "text": "The results  \n\n\nset.seed(2)\ngrid <- \n  alz_wflow %>% \n  extract_parameter_set_dials() %>% \n  grid_latin_hypercube(size = 25)\n\ngrid %>% \n  ggplot(aes(penalty, mixture)) +\n  geom_point(cex = 4) +\n  scale_x_log10()\n\n\n\n\n\n\n\nNote that penalty was generated in log-10 units."
+    "text": "The results  \n\n\nset.seed(2)\ngrid <- \n  alz_wflow %>% \n  extract_parameter_set_dials() %>% \n  grid_latin_hypercube(size = 25)\n\ngrid %>% \n  ggplot(aes(penalty, mixture)) +\n  geom_point(cex = 4) +\n  scale_x_log10()\n\n\n\n\n\n\n\n\n\n\n\nNote that penalty was generated in log-10 units."
   },
   {
     "objectID": "slides/4-tuning.html#grid-results",
@@ -473,7 +473,7 @@
     "href": "slides/4-tuning.html#your-turn",
     "title": "Tuning models",
     "section": "Your turn",
-    "text": "Your turn\n\n\nTune the nearest neighbor model.\n\n\n\n10:00"
+    "text": "Your turn\n\n\nTune the nearest neighbor workflow.\n\n\n\n10:00"
   },
   {
     "objectID": "slides/4-tuning.html#returning-results-1",
@@ -635,5 +635,12 @@
     "title": "Building models",
     "section": "Prediction types ",
     "text": "Prediction types \n\nlr_fit %>%\n  predict(new_data = alz_new, type = \"prob\")\n#> # A tibble: 3 × 2\n#>   .pred_Impaired .pred_Control\n#>            <dbl>         <dbl>\n#> 1         0.0505       0.949  \n#> 2         0.746        0.254  \n#> 3         0.994        0.00615\n\nlr_fit %>%\n  augment(new_data = alz_new)\n#> # A tibble: 3 × 6\n#>     tau  VEGF Class    .pred_class .pred_Impaired .pred_Control\n#>   <dbl> <dbl> <fct>    <fct>                <dbl>         <dbl>\n#> 1     5    15 Control  Control             0.0505       0.949  \n#> 2     6    15 Control  Impaired            0.746        0.254  \n#> 3     7    15 Impaired Impaired            0.994        0.00615"
+  },
+  {
+    "objectID": "slides/3-workflow.html#your-turn-1",
+    "href": "slides/3-workflow.html#your-turn-1",
+    "title": "Building better workflows",
+    "section": "Your turn",
+    "text": "Your turn\n\n\nBuild a workflow with a nearest neighbor model and an appropriate recipe.\nWhat are the performance estimates via 10-fold cross-validation?\n\n\n\n10:00"
   }
 ]
