@@ -5,6 +5,7 @@ author: "Hannah Frick"
 format: 
   revealjs:
     slide-number: true
+    footer: <https://hfrick.github.io/2022-AI-and-health/>
     theme: [default, tidymodels.scss]
     width: 1600
     height: 900
@@ -20,9 +21,21 @@ knitr:
 #| file: setup.R
 ```
 
-Course website <FIXME>
+# Course website
 
-## whoami
+::: {.r-fit-text}
+<https://hfrick.github.io/2022-AI-and-health/>
+:::
+
+# 
+
+:::{.r-stack}
+[`r icons::fontawesome("github")` @hfrick](https://github.com/hfrick)  
+[`r icons::fontawesome("twitter")` @hfcfrick](https://twitter.com/hfcfcrick)  
+[`r icons::fontawesome("link")` frick.ws](https://frick.ws)
+:::
+
+
 
 ## Our goals for this workshop
 

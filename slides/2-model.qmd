@@ -5,6 +5,7 @@ author: "Hannah Frick"
 format: 
   revealjs:
     slide-number: true
+    footer: <https://hfrick.github.io/2022-AI-and-health/>
     theme: [default, tidymodels.scss]
     width: 1600
     height: 900
@@ -44,7 +45,7 @@ For machine learning, we typically split data into training and test sets:
 
 Do not 🚫 use the test set during training.
 
-##  {background-image="images/Hatching-process.jpg"}
+##
 
 ```{r}
 #| echo: false
@@ -211,7 +212,7 @@ All available models are listed at <https://www.tidymodels.org/find/parsnip/>
 - in parsnip and extension packages
 :::
 
-## To use a model
+## To use a model `r hexes("parsnip")` 
 
 Now we've specified a model - how do we use it?
 
@@ -222,7 +223,7 @@ lr_spec <-
   set_mode("classification")
 ```
 
-## To use a model
+## To use a model `r hexes("parsnip")` 
 
 We can fit it to our data
 
@@ -236,7 +237,7 @@ lr_fit
 ```
 
 
-## To use a model
+## To use a model `r hexes("parsnip")` 
 
 We can predict new data with the fitted model
 
@@ -281,7 +282,7 @@ we can just do bind_cols() so easily because of the prediction format!
 -   The column names and types are **unsurprising** and **predictable**
 -   The number of rows in `new_data` and the output **are the same**
 
-## Prediction types
+## Prediction types `r hexes("parsnip")` 
 
 ```{r}
 lr_fit %>%
@@ -301,16 +302,22 @@ lr_fit %>%
 
 *What is the performance on the test set?*
 
+::: columns
+::: {.column width="70%"}
 ```{r}
 #| eval: false
+
+set.seed(123)
 alz_split <- initial_split(alz, strata = Class, prop = .9)
 alz_train <- training(alz_split)
 alz_test <- testing(alz_split)
 ```
+:::
+:::
 
 ```{r}
 #| echo: false
-countdown(minutes = 10, id = "how-to-fit-linear-model")
+countdown(minutes = 10, id = "fit-decision-tree")
 ```
 
 # Which model is better? `r emo::ji("thinking_face")`

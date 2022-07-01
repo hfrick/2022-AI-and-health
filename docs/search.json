@@ -46,7 +46,7 @@
     "href": "slides/1-introduction.html#whoami",
     "title": "Introduction to tidymodels",
     "section": "whoami",
-    "text": "whoami"
+    "text": "whoami\n\n\n\n\n  @hfrick\n  @hfcfrick\n  frick.ws"
   },
   {
     "objectID": "slides/1-introduction.html#our-goals-for-this-workshop",
@@ -74,7 +74,7 @@
     "href": "slides/1-introduction.html#the-tidymodels-package-1",
     "title": "Introduction to tidymodels",
     "section": "The tidymodels package",
-    "text": "The tidymodels package\n\nlibrary(tidymodels)\n#> ── Attaching packages ──────────────────────────── tidymodels 0.2.0 ──\n#> ✔ broom        0.8.0          ✔ rsample      0.1.1     \n#> ✔ dials        1.0.0.9000     ✔ tibble       3.1.7     \n#> ✔ dplyr        1.0.9          ✔ tidyr        1.2.0     \n#> ✔ infer        1.0.0          ✔ tune         0.2.0.9002\n#> ✔ modeldata    0.1.1          ✔ workflows    0.2.6.9001\n#> ✔ parsnip      1.0.0.9000     ✔ workflowsets 0.2.1     \n#> ✔ purrr        0.3.4          ✔ yardstick    1.0.0.9000\n#> ✔ recipes      0.2.0.9001\n#> ── Conflicts ─────────────────────────────── tidymodels_conflicts() ──\n#> ✖ purrr::discard() masks scales::discard()\n#> ✖ dplyr::filter()  masks stats::filter()\n#> ✖ dplyr::lag()     masks stats::lag()\n#> ✖ recipes::step()  masks stats::step()\n#> • Learn how to get started at https://www.tidymodels.org/start/"
+    "text": "The tidymodels package\n\nlibrary(tidymodels)\n#> ── Attaching packages ──────────────────────────── tidymodels 0.2.0 ──\n#> ✔ broom        0.8.0          ✔ rsample      0.1.1     \n#> ✔ dials        1.0.0.9000     ✔ tibble       3.1.7     \n#> ✔ dplyr        1.0.9          ✔ tidyr        1.2.0     \n#> ✔ infer        1.0.0          ✔ tune         0.2.0.9002\n#> ✔ modeldata    0.1.1          ✔ workflows    0.2.6.9001\n#> ✔ parsnip      1.0.0.9000     ✔ workflowsets 0.2.1     \n#> ✔ purrr        0.3.4          ✔ yardstick    1.0.0.9000\n#> ✔ recipes      0.2.0.9001\n#> ── Conflicts ─────────────────────────────── tidymodels_conflicts() ──\n#> ✖ purrr::discard() masks scales::discard()\n#> ✖ dplyr::filter()  masks stats::filter()\n#> ✖ dplyr::lag()     masks stats::lag()\n#> ✖ recipes::step()  masks stats::step()\n#> • Use tidymodels_prefer() to resolve common conflicts."
   },
   {
     "objectID": "slides/1-introduction.html#managing-name-conflicts",
@@ -116,7 +116,7 @@
     "href": "slides/1-introduction.html#schedule-for-today",
     "title": "Introduction to tidymodels",
     "section": "Schedule for today",
-    "text": "Schedule for today\n\nA minimal model\nA better workflow\nA tuned model\n\n\n\nget through the fundamentals\nmake our model better\nlet the computer make our model better"
+    "text": "Schedule for today\n\nA minimal model\nA better workflow\nA tuned model\n\n\n\nget through the fundamentals\nmake our model better\nlet the computer make our model better\n\n\n\n\nhttps://hfrick.github.io/2022-AI-and-health/"
   },
   {
     "objectID": "slides/2-model.html#hello-world",
@@ -192,22 +192,22 @@
     "objectID": "slides/2-model.html#to-use-a-model",
     "href": "slides/2-model.html#to-use-a-model",
     "title": "Building models",
-    "section": "To use a model",
-    "text": "To use a model\nNow we’ve specified a model - how do we use it?\n\nlr_spec <- \n  logistic_reg() %>% \n  set_engine(\"glm\") %>% \n  set_mode(\"classification\")"
+    "section": "To use a model ",
+    "text": "To use a model \nNow we’ve specified a model - how do we use it?\n\nlr_spec <- \n  logistic_reg() %>% \n  set_engine(\"glm\") %>% \n  set_mode(\"classification\")"
   },
   {
     "objectID": "slides/2-model.html#to-use-a-model-1",
     "href": "slides/2-model.html#to-use-a-model-1",
     "title": "Building models",
-    "section": "To use a model",
-    "text": "To use a model\nWe can fit it to our data\n\nlr_fit <- \n  lr_spec %>% \n  fit(Class ~ tau + VEGF, \n      data = alz)\n\nlr_fit\n#> parsnip model object\n#> \n#> \n#> Call:  stats::glm(formula = Class ~ tau + VEGF, family = stats::binomial, \n#>     data = data)\n#> \n#> Coefficients:\n#> (Intercept)          tau         VEGF  \n#>      8.9747      -4.0095       0.9337  \n#> \n#> Degrees of Freedom: 332 Total (i.e. Null);  330 Residual\n#> Null Deviance:       390.6 \n#> Residual Deviance: 236.3     AIC: 242.3"
+    "section": "To use a model ",
+    "text": "To use a model \nWe can fit it to our data\n\nlr_fit <- \n  lr_spec %>% \n  fit(Class ~ tau + VEGF, \n      data = alz)\n\nlr_fit\n#> parsnip model object\n#> \n#> \n#> Call:  stats::glm(formula = Class ~ tau + VEGF, family = stats::binomial, \n#>     data = data)\n#> \n#> Coefficients:\n#> (Intercept)          tau         VEGF  \n#>      8.9747      -4.0095       0.9337  \n#> \n#> Degrees of Freedom: 332 Total (i.e. Null);  330 Residual\n#> Null Deviance:       390.6 \n#> Residual Deviance: 236.3     AIC: 242.3"
   },
   {
     "objectID": "slides/2-model.html#to-use-a-model-2",
     "href": "slides/2-model.html#to-use-a-model-2",
     "title": "Building models",
-    "section": "To use a model",
-    "text": "To use a model\nWe can predict new data with the fitted model\n\nalz_new <- \n  tibble(tau = c(5, 6, 7), \n         VEGF = c(15, 15, 15),\n         Class = c(\"Control\", \"Control\", \"Impaired\")) %>% \n  mutate(Class = factor(Class, levels = c(\"Impaired\", \"Control\")))\n\nlr_fit %>% \n  predict(new_data = alz_new)\n#> # A tibble: 3 × 1\n#>   .pred_class\n#>   <fct>      \n#> 1 Control    \n#> 2 Impaired   \n#> 3 Impaired"
+    "section": "To use a model ",
+    "text": "To use a model \nWe can predict new data with the fitted model\n\nalz_new <- \n  tibble(tau = c(5, 6, 7), \n         VEGF = c(15, 15, 15),\n         Class = c(\"Control\", \"Control\", \"Impaired\")) %>% \n  mutate(Class = factor(Class, levels = c(\"Impaired\", \"Control\")))\n\nlr_fit %>% \n  predict(new_data = alz_new)\n#> # A tibble: 3 × 1\n#>   .pred_class\n#>   <fct>      \n#> 1 Control    \n#> 2 Impaired   \n#> 3 Impaired"
   },
   {
     "objectID": "slides/2-model.html#to-use-a-model-3",
@@ -228,7 +228,7 @@
     "href": "slides/2-model.html#your-turn-1",
     "title": "Building models",
     "section": "Your turn",
-    "text": "Your turn\n\n\nSplit the Alzheimer’s data and fit a decision tree.\nWhat is the performance on the test set?\n\nalz_split <- initial_split(alz, strata = Class, prop = .9)\nalz_train <- training(alz_split)\nalz_test <- testing(alz_split)\n\n\n\n\n10:00"
+    "text": "Your turn\n\n\nSplit the Alzheimer’s data and fit a decision tree.\nWhat is the performance on the test set?\n\n\n\nset.seed(123)\nalz_split <- initial_split(alz, strata = Class, prop = .9)\nalz_train <- training(alz_split)\nalz_test <- testing(alz_split)\n\n\n\n\n\n\n10:00"
   },
   {
     "objectID": "slides/2-model.html#cross-validation",
@@ -297,8 +297,8 @@
     "objectID": "slides/3-workflow.html#penalized-logistic-regression",
     "href": "slides/3-workflow.html#penalized-logistic-regression",
     "title": "Building better workflows",
-    "section": "Penalized logistic regression",
-    "text": "Penalized logistic regression\n\nlr_pen_spec <- \n  logistic_reg(penalty = 0.1) %>% \n  set_engine(\"glmnet\") %>% \n  set_mode(\"classification\")\n\n\n\nrequires all numeric predictors\nand all should to be centered and scaled"
+    "section": "Penalized logistic regression ",
+    "text": "Penalized logistic regression \n\nlr_pen_spec <- \n  logistic_reg(penalty = 0.1) %>% \n  set_engine(\"glmnet\") %>% \n  set_mode(\"classification\")\n\n\n\nrequires all numeric predictors\nand all should to be centered and scaled"
   },
   {
     "objectID": "slides/3-workflow.html#what-do-you-consider-the-estimation-part",
@@ -326,7 +326,7 @@
     "href": "slides/4-tuning.html#helpful-resources",
     "title": "Tuning models",
     "section": "Helpful resources",
-    "text": "Helpful resources\n\nOverview of tidymodels with articles covering different use cases: https://tidymodels.org\nTidy Modeling with R book: https://www.tmwr.org\nusemodels to create code snippets https://usemodels.tidymodels.org/"
+    "text": "Helpful resources\n\nOverview of tidymodels with articles covering different use cases: https://tidymodels.org\nTidy Modeling with R book: https://www.tmwr.org\nusemodels to create code snippets https://usemodels.tidymodels.org/\n\n\n\nhttps://hfrick.github.io/2022-AI-and-health/"
   },
   {
     "objectID": "slides/3-workflow.html#introducing-workflow",
@@ -339,36 +339,36 @@
     "objectID": "slides/3-workflow.html#use-a-workflow",
     "href": "slides/3-workflow.html#use-a-workflow",
     "title": "Building better workflows",
-    "section": "Use a workflow",
-    "text": "Use a workflow\n\nalz_wflow %>% \n  fit(alz_train) %>% \n  predict(alz_test)\n#> # A tibble: 35 × 1\n#>    .pred_class\n#>    <fct>      \n#>  1 Control    \n#>  2 Control    \n#>  3 Control    \n#>  4 Control    \n#>  5 Control    \n#>  6 Control    \n#>  7 Control    \n#>  8 Control    \n#>  9 Control    \n#> 10 Control    \n#> # … with 25 more rows"
+    "section": "Use a workflow ",
+    "text": "Use a workflow \n\nalz_wflow %>% \n  fit(alz_train) %>% \n  predict(alz_test)\n#> # A tibble: 35 × 1\n#>    .pred_class\n#>    <fct>      \n#>  1 Control    \n#>  2 Control    \n#>  3 Control    \n#>  4 Control    \n#>  5 Control    \n#>  6 Control    \n#>  7 Control    \n#>  8 Control    \n#>  9 Control    \n#> 10 Control    \n#> # … with 25 more rows\n\n\n\nfit: estimate and apply recipe to train\npredict: apply already estimated recipe to test"
   },
   {
     "objectID": "slides/3-workflow.html#use-a-workflow-1",
     "href": "slides/3-workflow.html#use-a-workflow-1",
     "title": "Building better workflows",
-    "section": "Use a workflow",
-    "text": "Use a workflow\n\nalz_res <- alz_wflow %>% \n  fit_resamples(alz_folds) \nalz_res\n#> # Resampling results\n#> # 10-fold cross-validation using stratification \n#> # A tibble: 10 × 4\n#>    splits           id     .metrics         .notes          \n#>    <list>           <chr>  <list>           <list>          \n#>  1 <split [267/31]> Fold01 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  2 <split [268/30]> Fold02 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  3 <split [268/30]> Fold03 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  4 <split [268/30]> Fold04 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  5 <split [268/30]> Fold05 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  6 <split [268/30]> Fold06 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  7 <split [268/30]> Fold07 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  8 <split [269/29]> Fold08 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  9 <split [269/29]> Fold09 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 10 <split [269/29]> Fold10 <tibble [2 × 4]> <tibble [0 × 3]>"
+    "section": "Use a workflow ",
+    "text": "Use a workflow \n\nalz_res <- alz_wflow %>% \n  fit_resamples(alz_folds) \nalz_res\n#> # Resampling results\n#> # 10-fold cross-validation using stratification \n#> # A tibble: 10 × 4\n#>    splits           id     .metrics         .notes          \n#>    <list>           <chr>  <list>           <list>          \n#>  1 <split [267/31]> Fold01 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  2 <split [268/30]> Fold02 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  3 <split [268/30]> Fold03 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  4 <split [268/30]> Fold04 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  5 <split [268/30]> Fold05 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  6 <split [268/30]> Fold06 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  7 <split [268/30]> Fold07 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  8 <split [269/29]> Fold08 <tibble [2 × 4]> <tibble [0 × 3]>\n#>  9 <split [269/29]> Fold09 <tibble [2 × 4]> <tibble [0 × 3]>\n#> 10 <split [269/29]> Fold10 <tibble [2 × 4]> <tibble [0 × 3]>"
   },
   {
     "objectID": "slides/3-workflow.html#your-turn",
     "href": "slides/3-workflow.html#your-turn",
     "title": "Building better workflows",
     "section": "Your turn",
-    "text": "Your turn\n\n\nBuild a workflow with a nearest neighbor model and an appropriate recipe.\nWhat are the performance estimates via 10-fold cross-validation?\n\n\n\n10:00"
+    "text": "Your turn\n\n\nBuild a workflow with a nearest neighbor model and an appropriate recipe.\nWhat are the performance estimates via 10-fold cross-validation?\n\n\n\n10:00\n\n\n\n\n\nhttps://hfrick.github.io/2022-AI-and-health/"
   },
   {
     "objectID": "slides/3-workflow.html#debugging-a-recipe",
     "href": "slides/3-workflow.html#debugging-a-recipe",
     "title": "Building better workflows",
-    "section": "Debugging a recipe",
-    "text": "Debugging a recipe\n90% of the time, you will want to use a workflow to estimate and apply a recipe. To do it manually, prep and bake!\n\n# prepping a recipe calculates the necessary estimates\nalz_rec_prepped <- prep(alz_rec)\n\n# baking a recipe applies those to a data set\nbake(alz_rec_prepped, new_data = NULL)\n#> # A tibble: 298 × 134\n#>    ACE_CD143_Angiotensin_C… ACTH_Adrenocort…    AXL Adiponectin Alpha_1_Antichy…\n#>                       <dbl>            <dbl>  <dbl>       <dbl>            <dbl>\n#>  1                    1.25            0.552   1.77      -0.227            1.03  \n#>  2                    0.656          -0.261   0.833      0.137           -0.215 \n#>  3                    1.98            2.08   -0.273      0.639            2.07  \n#>  4                   -0.690          -1.31    0.489     -1.36            -1.42  \n#>  5                   -1.13           -1.07   -1.44       0.489            0.447 \n#>  6                   -0.397          -1.56   -0.273      0.0605          -1.67  \n#>  7                    0.363          -0.645  -0.273     -0.848            0.0698\n#>  8                    0.438          -0.0837  0.489     -1.29            -1.31  \n#>  9                   -1.50           -1.31   -1.08      -1.58            -0.369 \n#> 10                   -0.794          -0.854  -2.15       0.112            2.17  \n#> # … with 288 more rows, and 129 more variables: Alpha_1_Antitrypsin <dbl>,\n#> #   Alpha_1_Microglobulin <dbl>, Alpha_2_Macroglobulin <dbl>,\n#> #   Angiopoietin_2_ANG_2 <dbl>, Angiotensinogen <dbl>,\n#> #   Apolipoprotein_A_IV <dbl>, Apolipoprotein_A1 <dbl>,\n#> #   Apolipoprotein_A2 <dbl>, Apolipoprotein_B <dbl>, Apolipoprotein_CI <dbl>,\n#> #   Apolipoprotein_CIII <dbl>, Apolipoprotein_D <dbl>, Apolipoprotein_E <dbl>,\n#> #   Apolipoprotein_H <dbl>, B_Lymphocyte_Chemoattractant_BL <dbl>, …"
+    "section": "Debugging a recipe ",
+    "text": "Debugging a recipe \n90% of the time, you will want to use a workflow to estimate and apply a recipe. To do it manually, prep and bake!\n\n# prepping a recipe calculates the necessary estimates\nalz_rec_prepped <- prep(alz_rec)\n\n# baking a recipe applies those to a data set\nbake(alz_rec_prepped, new_data = NULL)\n#> # A tibble: 298 × 134\n#>    ACE_CD143_Angiotensin_C… ACTH_Adrenocort…    AXL Adiponectin Alpha_1_Antichy…\n#>                       <dbl>            <dbl>  <dbl>       <dbl>            <dbl>\n#>  1                    1.25            0.552   1.77      -0.227            1.03  \n#>  2                    0.656          -0.261   0.833      0.137           -0.215 \n#>  3                    1.98            2.08   -0.273      0.639            2.07  \n#>  4                   -0.690          -1.31    0.489     -1.36            -1.42  \n#>  5                   -1.13           -1.07   -1.44       0.489            0.447 \n#>  6                   -0.397          -1.56   -0.273      0.0605          -1.67  \n#>  7                    0.363          -0.645  -0.273     -0.848            0.0698\n#>  8                    0.438          -0.0837  0.489     -1.29            -1.31  \n#>  9                   -1.50           -1.31   -1.08      -1.58            -0.369 \n#> 10                   -0.794          -0.854  -2.15       0.112            2.17  \n#> # … with 288 more rows, and 129 more variables: Alpha_1_Antitrypsin <dbl>,\n#> #   Alpha_1_Microglobulin <dbl>, Alpha_2_Macroglobulin <dbl>,\n#> #   Angiopoietin_2_ANG_2 <dbl>, Angiotensinogen <dbl>,\n#> #   Apolipoprotein_A_IV <dbl>, Apolipoprotein_A1 <dbl>,\n#> #   Apolipoprotein_A2 <dbl>, Apolipoprotein_B <dbl>, Apolipoprotein_CI <dbl>,\n#> #   Apolipoprotein_CIII <dbl>, Apolipoprotein_D <dbl>, Apolipoprotein_E <dbl>,\n#> #   Apolipoprotein_H <dbl>, B_Lymphocyte_Chemoattractant_BL <dbl>, …"
   },
   {
     "objectID": "slides/3-workflow.html#bundle-components-in-a-workflow",
     "href": "slides/3-workflow.html#bundle-components-in-a-workflow",
     "title": "Building better workflows",
-    "section": "Bundle components in a workflow()",
-    "text": "Bundle components in a workflow()\n\nalz_wflow <- workflow() %>% \n  add_model(lr_pen_spec) %>% \n  add_recipe(alz_rec)\n\n\n\ncan use other preprocessors: add_formula(), add_variables()\nuse a workflow like you’ve use the model before"
+    "section": "Bundle components in a workflow() ",
+    "text": "Bundle components in a workflow() \n\nalz_wflow <- workflow() %>% \n  add_model(lr_pen_spec) %>% \n  add_recipe(alz_rec)\n\n\n\ncan use other preprocessors: add_formula(), add_variables()\nuse a workflow like you’ve use the model before"
   },
   {
     "objectID": "slides/2-model.html#evaluating-model-performance-1",
@@ -382,7 +382,7 @@
     "href": "slides/2-model.html#how-did-we-do",
     "title": "Building models",
     "section": "How did we do?",
-    "text": "How did we do?\n\ndecision_tree() %>% \n  set_engine(\"rpart\") %>% \n  set_mode(\"classification\") %>% \n  fit_resamples(\n    Class ~ tau + VEGF, \n    resamples = alz_folds\n  ) %>% \n  collect_metrics()\n#> # A tibble: 2 × 6\n#>   .metric  .estimator  mean     n std_err .config             \n#>   <chr>    <chr>      <dbl> <int>   <dbl> <chr>               \n#> 1 accuracy binary     0.832     5  0.0229 Preprocessor1_Model1\n#> 2 roc_auc  binary     0.850     5  0.0325 Preprocessor1_Model1"
+    "text": "How did we do?\n\ndecision_tree() %>% \n  set_engine(\"rpart\") %>% \n  set_mode(\"classification\") %>% \n  fit_resamples(\n    Class ~ tau + VEGF, \n    resamples = alz_folds\n  ) %>% \n  collect_metrics()\n#> # A tibble: 2 × 6\n#>   .metric  .estimator  mean     n std_err .config             \n#>   <chr>    <chr>      <dbl> <int>   <dbl> <chr>               \n#> 1 accuracy binary     0.832     5  0.0229 Preprocessor1_Model1\n#> 2 roc_auc  binary     0.850     5  0.0325 Preprocessor1_Model1\n\n\n\nhttps://hfrick.github.io/2022-AI-and-health/"
   },
   {
     "objectID": "slides/4-tuning.html#tuning-parameters",
@@ -528,8 +528,8 @@
     "objectID": "slides/4-tuning.html#final-fitted-workflow",
     "href": "slides/4-tuning.html#final-fitted-workflow",
     "title": "Tuning models",
-    "section": "Final fitted workflow",
-    "text": "Final fitted workflow\nWe can extract the final workflow, fit on the training set:\n\nalz_final_fit <- test_res %>% \n  extract_workflow()\n\n# use to predict\npredict(alz_final_fit, alz_train[1:3,])\n#> # A tibble: 3 × 1\n#>   .pred_class\n#>   <fct>      \n#> 1 Control    \n#> 2 Control    \n#> 3 Control"
+    "section": "Final fitted workflow ",
+    "text": "Final fitted workflow \nWe can extract the final workflow, fit on the training set:\n\nalz_final_fit <- test_res %>% \n  extract_workflow()\n\n# use to predict\npredict(alz_final_fit, alz_train[1:3,])\n#> # A tibble: 3 × 1\n#>   .pred_class\n#>   <fct>      \n#> 1 Control    \n#> 2 Control    \n#> 3 Control"
   },
   {
     "objectID": "slides/4-tuning.html#updating-the-workflow",
@@ -556,50 +556,50 @@
     "objectID": "slides/3-workflow.html#a-first-recipe",
     "href": "slides/3-workflow.html#a-first-recipe",
     "title": "Building better workflows",
-    "section": "A first recipe",
-    "text": "A first recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train)\n\nBased on the formula, the function assigns columns to roles of “outcome” or “predictor”\n\nsummary(alz_rec)\n#> # A tibble: 131 × 4\n#>    variable                        type    role      source  \n#>    <chr>                           <chr>   <chr>     <chr>   \n#>  1 ACE_CD143_Angiotensin_Converti  numeric predictor original\n#>  2 ACTH_Adrenocorticotropic_Hormon numeric predictor original\n#>  3 AXL                             numeric predictor original\n#>  4 Adiponectin                     numeric predictor original\n#>  5 Alpha_1_Antichymotrypsin        numeric predictor original\n#>  6 Alpha_1_Antitrypsin             numeric predictor original\n#>  7 Alpha_1_Microglobulin           numeric predictor original\n#>  8 Alpha_2_Macroglobulin           numeric predictor original\n#>  9 Angiopoietin_2_ANG_2            numeric predictor original\n#> 10 Angiotensinogen                 numeric predictor original\n#> # … with 121 more rows"
+    "section": "A first recipe ",
+    "text": "A first recipe \n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train)\n\nBased on the formula, the function assigns columns to roles of “outcome” or “predictor”\n\nsummary(alz_rec)\n#> # A tibble: 131 × 4\n#>    variable                        type    role      source  \n#>    <chr>                           <chr>   <chr>     <chr>   \n#>  1 ACE_CD143_Angiotensin_Converti  numeric predictor original\n#>  2 ACTH_Adrenocorticotropic_Hormon numeric predictor original\n#>  3 AXL                             numeric predictor original\n#>  4 Adiponectin                     numeric predictor original\n#>  5 Alpha_1_Antichymotrypsin        numeric predictor original\n#>  6 Alpha_1_Antitrypsin             numeric predictor original\n#>  7 Alpha_1_Microglobulin           numeric predictor original\n#>  8 Alpha_2_Macroglobulin           numeric predictor original\n#>  9 Angiopoietin_2_ANG_2            numeric predictor original\n#> 10 Angiotensinogen                 numeric predictor original\n#> # … with 121 more rows"
   },
   {
     "objectID": "slides/3-workflow.html#a-basic-recipe",
     "href": "slides/3-workflow.html#a-basic-recipe",
     "title": "Building better workflows",
-    "section": "A basic recipe",
-    "text": "A basic recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03)"
+    "section": "A basic recipe ",
+    "text": "A basic recipe \n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03)"
   },
   {
     "objectID": "slides/3-workflow.html#a-basic-recipe-1",
     "href": "slides/3-workflow.html#a-basic-recipe-1",
     "title": "Building better workflows",
-    "section": "A basic recipe",
-    "text": "A basic recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_dummy(all_nominal_predictors()) \n\n\n\napplied to all nominal predictors!\nrecipes selectors: by type or by role or both!"
+    "section": "A basic recipe ",
+    "text": "A basic recipe \n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_dummy(all_nominal_predictors()) \n\n\n\napplied to all nominal predictors!\nrecipes selectors: by type or by role or both!"
   },
   {
     "objectID": "slides/3-workflow.html#a-basic-recipe-2",
     "href": "slides/3-workflow.html#a-basic-recipe-2",
     "title": "Building better workflows",
-    "section": "A basic recipe",
-    "text": "A basic recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) \n\n\n\nAdds a catch-all level to a factor for any new values not encountered in model training, to avoid hiccups with new, unknown factor levels\nbefore step_dummy()"
+    "section": "A basic recipe ",
+    "text": "A basic recipe \n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) \n\n\n\nAdds a catch-all level to a factor for any new values not encountered in model training, to avoid hiccups with new, unknown factor levels\nbefore step_dummy()"
   },
   {
     "objectID": "slides/3-workflow.html#a-basic-recipe-3",
     "href": "slides/3-workflow.html#a-basic-recipe-3",
     "title": "Building better workflows",
-    "section": "A basic recipe",
-    "text": "A basic recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) %>% \n  step_zv(all_predictors())"
+    "section": "A basic recipe ",
+    "text": "A basic recipe \n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) %>% \n  step_zv(all_predictors())"
   },
   {
     "objectID": "slides/3-workflow.html#a-basic-recipe-4",
     "href": "slides/3-workflow.html#a-basic-recipe-4",
     "title": "Building better workflows",
-    "section": "A basic recipe",
-    "text": "A basic recipe\n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) %>% \n  step_zv(all_predictors()) %>% \n  step_normalize(all_numeric())\n\n\n\nlearn the mean and sd of each numeric column and save it to apply to any dataset to normalize\nwhich brings us the question: what’s the estimation part?"
+    "section": "A basic recipe ",
+    "text": "A basic recipe \n\nalz_rec <- \n  recipe(Class ~ ., data = alz_train) %>% \n  step_other(Genotype, threshold = .03) %>%\n  step_novel(all_nominal_predictors()) %>% \n  step_dummy(all_nominal_predictors()) %>% \n  step_zv(all_predictors()) %>% \n  step_normalize(all_numeric())\n\n\n\nlearn the mean and sd of each numeric column and save it to apply to any dataset to normalize\nwhich brings us the question: what’s the estimation part?"
   },
   {
     "objectID": "slides/4-tuning.html#finalizing-the-workflow",
     "href": "slides/4-tuning.html#finalizing-the-workflow",
     "title": "Tuning models",
-    "section": "Finalizing the workflow",
-    "text": "Finalizing the workflow\n\nbest_auc <- select_best(lr_pen_res, metric = \"roc_auc\")\nbest_auc\n#> # A tibble: 1 × 4\n#>   penalty mixture genotype_threshold .config              \n#>     <dbl>   <dbl>              <dbl> <chr>                \n#> 1 0.00311   0.869             0.0969 Preprocessor14_Model1\n\nalz_wflow <- alz_wflow %>% \n  finalize_workflow(best_auc)"
+    "section": "Finalizing the workflow  ",
+    "text": "Finalizing the workflow  \n\nbest_auc <- select_best(lr_pen_res, metric = \"roc_auc\")\nbest_auc\n#> # A tibble: 1 × 4\n#>   penalty mixture genotype_threshold .config              \n#>     <dbl>   <dbl>              <dbl> <chr>                \n#> 1 0.00311   0.869             0.0969 Preprocessor14_Model1\n\nalz_wflow <- alz_wflow %>% \n  finalize_workflow(best_auc)"
   },
   {
     "objectID": "slides/4-tuning.html#compare-to-knn",
@@ -612,28 +612,28 @@
     "objectID": "slides/3-workflow.html#use-a-workflow-2",
     "href": "slides/3-workflow.html#use-a-workflow-2",
     "title": "Building better workflows",
-    "section": "Use a workflow",
-    "text": "Use a workflow\n\nalz_res %>% \n  collect_metrics()\n#> # A tibble: 2 × 6\n#>   .metric  .estimator  mean     n std_err .config             \n#>   <chr>    <chr>      <dbl> <int>   <dbl> <chr>               \n#> 1 accuracy binary     0.762    10  0.0106 Preprocessor1_Model1\n#> 2 roc_auc  binary     0.853    10  0.0153 Preprocessor1_Model1"
+    "section": "Use a workflow ",
+    "text": "Use a workflow \n\nalz_res %>% \n  collect_metrics()\n#> # A tibble: 2 × 6\n#>   .metric  .estimator  mean     n std_err .config             \n#>   <chr>    <chr>      <dbl> <int>   <dbl> <chr>               \n#> 1 accuracy binary     0.762    10  0.0106 Preprocessor1_Model1\n#> 2 roc_auc  binary     0.853    10  0.0153 Preprocessor1_Model1"
   },
   {
     "objectID": "slides/3-workflow.html#tidying-a-recipe",
     "href": "slides/3-workflow.html#tidying-a-recipe",
     "title": "Building better workflows",
-    "section": "Tidying a recipe",
-    "text": "Tidying a recipe\n\ntidy(alz_rec)\n#> # A tibble: 5 × 6\n#>   number operation type      trained skip  id             \n#>    <int> <chr>     <chr>     <lgl>   <lgl> <chr>          \n#> 1      1 step      other     FALSE   FALSE other_50f3D    \n#> 2      2 step      novel     FALSE   FALSE novel_AVARj    \n#> 3      3 step      dummy     FALSE   FALSE dummy_jPsqy    \n#> 4      4 step      zv        FALSE   FALSE zv_qylAU       \n#> 5      5 step      normalize FALSE   FALSE normalize_u5u0m"
+    "section": "Tidying a recipe ",
+    "text": "Tidying a recipe \n\ntidy(alz_rec)\n#> # A tibble: 5 × 6\n#>   number operation type      trained skip  id             \n#>    <int> <chr>     <chr>     <lgl>   <lgl> <chr>          \n#> 1      1 step      other     FALSE   FALSE other_50f3D    \n#> 2      2 step      novel     FALSE   FALSE novel_AVARj    \n#> 3      3 step      dummy     FALSE   FALSE dummy_jPsqy    \n#> 4      4 step      zv        FALSE   FALSE zv_qylAU       \n#> 5      5 step      normalize FALSE   FALSE normalize_u5u0m"
   },
   {
     "objectID": "slides/3-workflow.html#tidying-a-recipe-1",
     "href": "slides/3-workflow.html#tidying-a-recipe-1",
     "title": "Building better workflows",
-    "section": "Tidying a recipe",
-    "text": "Tidying a recipe\n\ntidy(alz_rec_prepped, number = 5)\n#> # A tibble: 266 × 4\n#>    terms                           statistic    value id             \n#>    <chr>                           <chr>        <dbl> <chr>          \n#>  1 ACE_CD143_Angiotensin_Converti  mean         1.32  normalize_u5u0m\n#>  2 ACTH_Adrenocorticotropic_Hormon mean        -1.54  normalize_u5u0m\n#>  3 AXL                             mean         0.312 normalize_u5u0m\n#>  4 Adiponectin                     mean        -5.21  normalize_u5u0m\n#>  5 Alpha_1_Antichymotrypsin        mean         1.36  normalize_u5u0m\n#>  6 Alpha_1_Antitrypsin             mean       -13.1   normalize_u5u0m\n#>  7 Alpha_1_Microglobulin           mean        -2.93  normalize_u5u0m\n#>  8 Alpha_2_Macroglobulin           mean      -159.    normalize_u5u0m\n#>  9 Angiopoietin_2_ANG_2            mean         0.664 normalize_u5u0m\n#> 10 Angiotensinogen                 mean         2.31  normalize_u5u0m\n#> # … with 256 more rows\n\n\naccess the stats for a step (after estimation/prep)"
+    "section": "Tidying a recipe ",
+    "text": "Tidying a recipe \n\ntidy(alz_rec_prepped, number = 5)\n#> # A tibble: 266 × 4\n#>    terms                           statistic    value id             \n#>    <chr>                           <chr>        <dbl> <chr>          \n#>  1 ACE_CD143_Angiotensin_Converti  mean         1.32  normalize_u5u0m\n#>  2 ACTH_Adrenocorticotropic_Hormon mean        -1.54  normalize_u5u0m\n#>  3 AXL                             mean         0.312 normalize_u5u0m\n#>  4 Adiponectin                     mean        -5.21  normalize_u5u0m\n#>  5 Alpha_1_Antichymotrypsin        mean         1.36  normalize_u5u0m\n#>  6 Alpha_1_Antitrypsin             mean       -13.1   normalize_u5u0m\n#>  7 Alpha_1_Microglobulin           mean        -2.93  normalize_u5u0m\n#>  8 Alpha_2_Macroglobulin           mean      -159.    normalize_u5u0m\n#>  9 Angiopoietin_2_ANG_2            mean         0.664 normalize_u5u0m\n#> 10 Angiotensinogen                 mean         2.31  normalize_u5u0m\n#> # … with 256 more rows\n\n\naccess the stats for a step (after estimation/prep)"
   },
   {
     "objectID": "slides/2-model.html#prediction-types",
     "href": "slides/2-model.html#prediction-types",
     "title": "Building models",
-    "section": "Prediction types",
-    "text": "Prediction types\n\nlr_fit %>%\n  predict(new_data = alz_new, type = \"prob\")\n#> # A tibble: 3 × 2\n#>   .pred_Impaired .pred_Control\n#>            <dbl>         <dbl>\n#> 1         0.0505       0.949  \n#> 2         0.746        0.254  \n#> 3         0.994        0.00615\n\nlr_fit %>%\n  augment(new_data = alz_new)\n#> # A tibble: 3 × 6\n#>     tau  VEGF Class    .pred_class .pred_Impaired .pred_Control\n#>   <dbl> <dbl> <fct>    <fct>                <dbl>         <dbl>\n#> 1     5    15 Control  Control             0.0505       0.949  \n#> 2     6    15 Control  Impaired            0.746        0.254  \n#> 3     7    15 Impaired Impaired            0.994        0.00615"
+    "section": "Prediction types ",
+    "text": "Prediction types \n\nlr_fit %>%\n  predict(new_data = alz_new, type = \"prob\")\n#> # A tibble: 3 × 2\n#>   .pred_Impaired .pred_Control\n#>            <dbl>         <dbl>\n#> 1         0.0505       0.949  \n#> 2         0.746        0.254  \n#> 3         0.994        0.00615\n\nlr_fit %>%\n  augment(new_data = alz_new)\n#> # A tibble: 3 × 6\n#>     tau  VEGF Class    .pred_class .pred_Impaired .pred_Control\n#>   <dbl> <dbl> <fct>    <fct>                <dbl>         <dbl>\n#> 1     5    15 Control  Control             0.0505       0.949  \n#> 2     6    15 Control  Impaired            0.746        0.254  \n#> 3     7    15 Impaired Impaired            0.994        0.00615"
   }
 ]

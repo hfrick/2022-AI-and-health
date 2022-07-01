@@ -5,6 +5,7 @@ author: "Hannah Frick"
 format: 
   revealjs:
     slide-number: true
+    footer: <https://hfrick.github.io/2022-AI-and-health/>
     theme: [default, tidymodels.scss]
     width: 1600
     height: 900
@@ -53,7 +54,7 @@ alz_folds <-
 - textrecipes for preprocessing text data
 :::
 
-## A first recipe
+## A first recipe `r hexes("recipes")` 
 
 ```{r}
 alz_rec <- 
@@ -66,7 +67,7 @@ Based on the formula, the function assigns columns to roles of "outcome" or "pre
 summary(alz_rec)
 ```
 
-## Penalized logistic regression
+## Penalized logistic regression `r hexes("parsnip")`
 
 ```{r}
 lr_pen_spec <- 
@@ -80,7 +81,7 @@ lr_pen_spec <-
 - and all should to be centered and scaled
 :::
 
-## A basic recipe
+## A basic recipe `r hexes("recipes")`
 
 ```{r}
 alz_rec <- 
@@ -88,7 +89,7 @@ alz_rec <-
   step_other(Genotype, threshold = .03)
 ```
 
-## A basic recipe
+## A basic recipe `r hexes("recipes")`
 
 ```{r}
 alz_rec <- 
@@ -102,7 +103,7 @@ alz_rec <-
 - recipes selectors: by type or by role or both!
 :::
 
-## A basic recipe
+## A basic recipe `r hexes("recipes")`
 
 ```{r}
 #| code-line-numbers: "4"
@@ -118,7 +119,7 @@ alz_rec <-
 - **before** step_dummy()
 :::
 
-## A basic recipe
+## A basic recipe `r hexes("recipes")`
 
 ```{r}
 alz_rec <- 
@@ -130,7 +131,7 @@ alz_rec <-
 ```
 
 
-## A basic recipe
+## A basic recipe `r hexes("recipes")`
 
 ```{r}
 alz_rec <- 
@@ -172,7 +173,7 @@ the more complex/powerful the preprocessing is, the more this is a problem!
 - tidymodels design principle is to provide tools that make good modelling practice easy: "pit of success"
 :::
 
-## Bundle components in a `workflow()`
+## Bundle components in a `workflow()` `r hexes("workflows")`
 
 ```{r}
 alz_wflow <- workflow() %>% 
@@ -185,7 +186,7 @@ alz_wflow <- workflow() %>%
 - use a workflow like you've use the model before
 :::
 
-## Use a workflow
+## Use a workflow `r hexes("workflows")`
 
 ```{r}
 alz_wflow %>% 
@@ -198,7 +199,7 @@ alz_wflow %>%
 - predict: apply already estimated recipe to test
 :::
 
-## Use a workflow
+## Use a workflow `r hexes("workflows")`
 
 ```{r}
 alz_res <- alz_wflow %>% 
@@ -206,14 +207,14 @@ alz_res <- alz_wflow %>%
 alz_res
 ```
 
-## Use a workflow
+## Use a workflow `r hexes("workflows")`
 
 ```{r}
 alz_res %>% 
   collect_metrics()
 ```
 
-## Debugging a recipe
+## Debugging a recipe `r hexes("recipe")`
 
 90% of the time, you will want to use a workflow to estimate and apply a recipe. To do it manually, prep and bake!
 
@@ -225,13 +226,13 @@ alz_rec_prepped <- prep(alz_rec)
 bake(alz_rec_prepped, new_data = NULL)
 ```
 
-## Tidying a recipe
+## Tidying a recipe `r hexes("recipes")`
 
 ```{r}
 tidy(alz_rec)
 ```
 
-## Tidying a recipe
+## Tidying a recipe `r hexes("recipes")`
 
 ```{r}
 tidy(alz_rec_prepped, number = 5)

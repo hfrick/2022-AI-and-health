@@ -5,6 +5,7 @@ author: "Hannah Frick"
 format: 
   revealjs:
     slide-number: true
+    footer: <https://hfrick.github.io/2022-AI-and-health/>
     theme: [default, tidymodels.scss]
     width: 1600
     height: 900
@@ -247,7 +248,7 @@ show_best(lr_pen_res, metric = "roc_auc", n = 3)
 show_best(knn_res, metric = "roc_auc", n = 3)
 ```
 
-## Finalizing the workflow
+## Finalizing the workflow `r I(hexes(c("workflows", "tune")))`
 
 ```{r}
 best_auc <- select_best(lr_pen_res, metric = "roc_auc")
@@ -274,7 +275,7 @@ collect_metrics(test_res)
 show_best(lr_pen_res, metric = "roc_auc", n = 1)
 ```
 
-## Final fitted workflow
+## Final fitted workflow `r hexes("workflows")`
 
 We can extract the final workflow, fit on the training set:
 
